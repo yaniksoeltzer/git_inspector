@@ -25,5 +25,7 @@ def information_message(repos):
         count_total=len(repos),
         count_dirty=len(dirty_repos),
     )
-    message = dirty_repos_message+"\n"+summary_message
+    message = ""
+    message += dirty_repos_message+("\n" if dirty_repos_message else "")
+    message += summary_message
     return message
