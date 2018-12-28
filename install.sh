@@ -5,7 +5,7 @@ set -e
 # install virtual environment
 if [ ! -f venv ]
 then
-    python3 -pip install virtualenv
+    python3 -m pip install virtualenv
     virtualenv --python=python3 venv
 fi
 
