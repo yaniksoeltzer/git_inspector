@@ -25,6 +25,13 @@ def information_message(repos):
         count_total=len(repos),
         count_dirty=len(dirty_repos),
     )
+    if dirty_repos:
+        summary_message = "\033[1;31m"+summary_message
+    else :
+        summary_message = "\033[0;32m"+summary_message
+    summary_message += "\033[0m"
+
+
     message = ""
     message += dirty_repos_message+("\n" if dirty_repos_message else "")
     message += summary_message
