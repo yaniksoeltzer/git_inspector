@@ -1,38 +1,15 @@
-import random
-
-from git_inspector.py_find import get_git_repository_paths
-from git import Repo, Remote,Commit
+from git import Repo
+from git_inspector.py_find import find_git_repository_paths
+from git_inspector.report import GitInspectorReport
 
 
 def inspect_all():
-    repo_file_names = get_git_repository_paths("/")
-    repos = [Repo(filename) for filename in repo_file_names]
-    message = information_message(repos)
-    print(message)
+    repos = get_git_repos()
+    report = GitInspectorReport(repos)
+    print(report)
 
 
-def information_message(repos):
-    dirty_repos = [repo for repo in repos if repo.is_dirty()]
-    dirty_repos_messages = [
-        "dirty: {path}".format(
-            path=repo.git_dir
-        )
-        for repo in dirty_repos]
-    dirty_repos_message = "\n".join(dirty_repos_messages)
-
-    summary_message = "{count_total} git repositories found: " \
-              "{count_dirty} have changes.".format(
-        count_total=len(repos),
-        count_dirty=len(dirty_repos),
-    )
-    if dirty_repos:
-        summary_message = "\033[1;31m"+summary_message
-    else :
-        summary_message = "\033[0;32m"+summary_message
-    summary_message += "\033[0m"
-
-
-    message = ""
-    message += dirty_repos_message+("\n" if dirty_repos_message else "")
-    message += summary_message
-    return message
+def get_git_repos():
+    repo_file_names = find_git_repository_paths("/")
+    repos = map(Repo, repo_file_names)
+    return list(repos)
