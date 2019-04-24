@@ -75,7 +75,8 @@ class UnpushedRemotesOfRepoReport:
                     pass
             except ValueError:
                 #self.unpushed_heads.append((head, "error"))
-                print("error with ", head, remote)
+                pass
+                #print("error with ", head, remote)
 
     def __str__(self):
         if len(self.unpushed_heads) == 0:
