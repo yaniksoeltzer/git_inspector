@@ -4,10 +4,11 @@ class GitInspectorReport:
         self.summary_report = SummaryReport(repos)
 
     def __str__(self):
-        return "\n".join([
-            str(self.dirty_report),
-            str(self.summary_report),
-        ])
+        return "\n".join(
+            filter(lambda s: s != "", [
+                str(self.dirty_report),
+                str(self.summary_report),
+            ]))
 
 
 class DirtyReposReport:
@@ -20,11 +21,14 @@ class DirtyReposReport:
         )
 
     def __str__(self):
-        return f"dirty:\n" \
-               + "\n".join(map(
-                         lambda path: "     " + path,
-                         self.dirty_repo_paths
-               ))
+        if len(self.dirty_repo_paths) == 0:
+            return ""
+        return \
+            f"dirty:\n" \
+            + "\n".join(map(
+                    lambda path: f"     {path}",
+                    self.dirty_repo_paths
+                ))
 
 
 class SummaryReport:
@@ -37,9 +41,9 @@ class SummaryReport:
     def __str__(self):
         summary_message = \
             f"{self.repo_cnt} git repositories found: " \
-            f"{self.dirty_repo_cnt} have changes."
+                f"{self.dirty_repo_cnt} have changes."
 
-        if self.dirty_repo_cnt>0:
+        if self.dirty_repo_cnt > 0:
             summary_message = "\033[1;31m" + summary_message
         else:
             summary_message = "\033[0;32m" + summary_message
