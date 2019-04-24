@@ -1,12 +1,19 @@
+from typing import NamedTuple
+
+from git import Repo
+
+
 class GitInspectorReport:
     def __init__(self, repos):
         self.dirty_report = DirtyReposReport(repos)
+        self.unpushed_report = UnpushedRemotesReport(repos)
         self.summary_report = SummaryReport(repos)
 
     def __str__(self):
         return "\n".join(
             filter(lambda s: s != "", [
                 str(self.dirty_report),
+                str(self.unpushed_report),
                 str(self.summary_report),
             ]))
 
@@ -29,6 +36,72 @@ class DirtyReposReport:
                     lambda path: f"     {path}",
                     self.dirty_repo_paths
                 ))
+
+
+def get_tracked_heads(repo):
+    return list(filter(
+        lambda head: head.tracking_branch() is not None,
+        repo.heads
+    ))
+
+
+def compare_commits(commit_1, commit_2):
+    if commit_1.hexsha == commit_2.hexsha:
+        return 0
+    com_1_parent_hex = [p.hexsha for p in commit_1.parents]
+    if commit_2.hexsha in com_1_parent_hex:
+        return 1
+    com_2_parent_hex = [p.hexsha for p in commit_2.parents]
+    if commit_1.hexsha in com_2_parent_hex:
+        return -1
+    return None
+
+
+class UnpushedRemotesOfRepoReport:
+    def __init__(self, repo):
+        self.repo = repo
+        self.unpushed_heads = []
+
+        tracked_heads = get_tracked_heads(repo)
+        for head in tracked_heads:
+            remote = head.tracking_branch()
+            try:
+                re = compare_commits(head.commit, remote.commit)
+                if not re:
+                    pass
+                elif re > 0:
+                    self.unpushed_heads.append((head, "before"))
+                elif re < 0:
+                    pass
+            except ValueError:
+                #self.unpushed_heads.append((head, "error"))
+                print("error with ", head, remote)
+
+    def __str__(self):
+        if len(self.unpushed_heads) == 0:
+            return ""
+        return f"{self.repo.working_tree_dir}" \
+             + "".join([
+            f"\n         {head} has unpushed commits" for head, re in self.unpushed_heads
+            if str(head) != "master"
+        ])
+
+class UnpushedRemotesReport:
+
+    unpushed_repo_reports = []
+    def __init__(self, repos):
+        for repo in repos:
+            self.unpushed_repo_reports.append(
+                UnpushedRemotesOfRepoReport(repo)
+            )
+    def __str__(self):
+        if len(self.unpushed_repo_reports) == 0:
+            return ""
+        return "unpushed remotes:\n" +\
+               "\n".join([
+            "    "+ str(unpushed_repo_report)
+            for unpushed_repo_report in self.unpushed_repo_reports if str(unpushed_repo_report) != ""
+        ])
 
 
 class SummaryReport:
