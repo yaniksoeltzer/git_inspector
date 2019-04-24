@@ -80,10 +80,8 @@ class UnpushedRemotesOfRepoReport:
     def __str__(self):
         if len(self.unpushed_heads) == 0:
             return ""
-        return f"{self.repo.working_tree_dir}" \
-             + "".join([
-            f"\n         {head} has unpushed commits" for head, re in self.unpushed_heads
-            if str(head) != "master"
+        return "\n".join([
+            f"     {self.repo.working_tree_dir}  {f'@{head}' if str(head) != 'master' else ''}" for head, re in self.unpushed_heads
         ])
 
 class UnpushedRemotesReport:
@@ -99,7 +97,7 @@ class UnpushedRemotesReport:
             return ""
         return "unpushed remotes:\n" +\
                "\n".join([
-            "    "+ str(unpushed_repo_report)
+            str(unpushed_repo_report)
             for unpushed_repo_report in self.unpushed_repo_reports if str(unpushed_repo_report) != ""
         ])
 
