@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-# if some command exit non zero, stop installation
 set -e
 
-# install virtual environment
-if [ ! -f venv ]
+
+INSTALL_DIR='/opt/git_inspector'
+
+
+if [[ -d ${INSTALL_DIR} ]]
 then
-    python3 -m pip install virtualenv
-    virtualenv --python=python3 venv
+    echo "git_inspector is already installed"
+    exit 1
 fi
 
-
-source venv/bin/activate
-
+# copy and install venv
+cp -r . ${INSTALL_DIR}
+cd ${INSTALL_DIR}
 python3 -m pip install -r requirements.txt
 
-deactivate
+
+# link path
+sudo ln -s ${INSTALL_DIR}/git_inspector.py /usr/local/bin/git_inspector
