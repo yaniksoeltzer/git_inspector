@@ -1,7 +1,8 @@
 from git_inspector.common import *
+from git_inspector.reports.report import Report
 
 
-class MergedBranchesRepoReport:
+class MergedBranchesRepoReport(Report):
     def __init__(self, repo):
         self.repo = repo
         self.merged_heads = []
@@ -13,6 +14,12 @@ class MergedBranchesRepoReport:
                 if cmp and cmp >= 0:
                     self.merged_heads.append(non_master)
 
+    def number_of_warnings(self):
+        return len(self.merged_heads)
+
+    def number_of_alerts(self):
+        return 0
+
     def __str__(self):
         if len(self.merged_heads) == 0:
             return ""
@@ -22,7 +29,7 @@ class MergedBranchesRepoReport:
         ])
 
 
-class MergedBranchesReport:
+class MergedBranchesReport(Report):
     merged_branches_repo_reports = []
 
     def __init__(self, repos):
@@ -30,6 +37,15 @@ class MergedBranchesReport:
             self.merged_branches_repo_reports.append(
                 MergedBranchesRepoReport(repo)
             )
+
+    def number_of_alerts(self):
+        return 0
+
+    def number_of_warnings(self):
+        return sum([
+            r.number_of_warnings()
+            for r in self.merged_branches_repo_reports
+        ])
 
     def __str__(self):
         if len(self.merged_branches_repo_reports) == 0:

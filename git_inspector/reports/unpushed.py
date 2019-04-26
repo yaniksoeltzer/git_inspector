@@ -1,7 +1,8 @@
 from git_inspector.common import get_tracked_heads, compare_commits
+from git_inspector.reports.report import Report
 
 
-class UnpushedRemotesOfRepoReport:
+class UnpushedRemotesOfRepoReport(Report):
     def __init__(self, repo):
         self.repo = repo
         self.unpushed_heads = []
@@ -22,6 +23,12 @@ class UnpushedRemotesOfRepoReport:
                 pass
                 # print("error with ", head, remote)
 
+    def number_of_alerts(self):
+        return 0
+
+    def number_of_warnings(self):
+        return len(self.unpushed_heads)
+
     def __str__(self):
         if len(self.unpushed_heads) == 0:
             return ""
@@ -31,7 +38,7 @@ class UnpushedRemotesOfRepoReport:
         ])
 
 
-class UnpushedRemotesReport:
+class UnpushedRemotesReport(Report):
     unpushed_repo_reports = []
 
     def __init__(self, repos):
@@ -39,6 +46,12 @@ class UnpushedRemotesReport:
             self.unpushed_repo_reports.append(
                 UnpushedRemotesOfRepoReport(repo)
             )
+
+    def number_of_alerts(self):
+        return 0
+
+    def number_of_warnings(self):
+        return sum(map(lambda x:x.number_of_warnings(),self.unpushed_repo_reports))
 
     def __str__(self):
         if len(self.unpushed_repo_reports) == 0:
