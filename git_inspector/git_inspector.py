@@ -1,6 +1,6 @@
 from git import Repo
 from git_inspector.py_find import find_git_repository_paths
-from git_inspector.report import GitInspectorReport
+from git_inspector.reports import GitInspectorReport
 
 
 def inspect_all():
