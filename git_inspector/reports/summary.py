@@ -11,7 +11,7 @@ class SummaryReport:
     def __str__(self):
         summary_message = \
             f"{self.repo_cnt} git repositories found: " \
-                f"{self.dirty_repo_cnt} have changes."
+            f"{self.dirty_repo_cnt} have changes."
 
         if self.dirty_repo_cnt > 0:
             summary_message = "\033[1;31m" + summary_message

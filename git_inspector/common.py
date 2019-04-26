@@ -18,8 +18,6 @@ def compare_commits(commit_1, commit_2):
     return None
 
 
-
-
 def filter_dirty_repos(repos):
     dirty_repos = filter(lambda x: x.is_dirty(), repos)
     return list(dirty_repos)
