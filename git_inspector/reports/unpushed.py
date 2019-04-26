@@ -43,9 +43,9 @@ class UnpushedRemotesReport(Report):
 
     def __init__(self, repos):
         for repo in repos:
-            self.unpushed_repo_reports.append(
-                UnpushedRemotesOfRepoReport(repo)
-            )
+            report = UnpushedRemotesOfRepoReport(repo)
+            if str(report) != "":
+                self.unpushed_repo_reports.append(report)
 
     def number_of_alerts(self):
         return 0
@@ -57,7 +57,4 @@ class UnpushedRemotesReport(Report):
         if len(self.unpushed_repo_reports) == 0:
             return ""
         return "unpushed remotes:\n" + \
-               "\n".join([
-                   str(unpushed_repo_report)
-                   for unpushed_repo_report in self.unpushed_repo_reports if str(unpushed_repo_report) != ""
-               ])
+               "\n".join(map(str, self.unpushed_repo_reports))

@@ -34,9 +34,9 @@ class MergedBranchesReport(Report):
 
     def __init__(self, repos):
         for repo in repos:
-            self.merged_branches_repo_reports.append(
-                MergedBranchesRepoReport(repo)
-            )
+            report = MergedBranchesRepoReport(repo)
+            if str(report) != "":
+                self.merged_branches_repo_reports.append(report)
 
     def number_of_alerts(self):
         return 0
@@ -51,8 +51,4 @@ class MergedBranchesReport(Report):
         if len(self.merged_branches_repo_reports) == 0:
             return ""
         return "merged branches:\n" + \
-               "\n".join([
-                   str(merged_branches_repo_report)
-                   for merged_branches_repo_report in self.merged_branches_repo_reports
-                   if str(merged_branches_repo_report) != ""
-               ])
+               "\n".join(map(str, self.merged_branches_repo_reports))
