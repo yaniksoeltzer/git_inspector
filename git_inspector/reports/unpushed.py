@@ -1,8 +1,8 @@
 from git_inspector.common import get_tracked_heads, compare_commits
-from git_inspector.reports.report import Report
+from git_inspector.reports.git_report import Reporter, GitReport, GIT_REPORT_LEVEL_WARNING
 
 
-class UnpushedRemotesOfRepoReport(Report):
+class UnpushedRemotesOfRepoReporter(Reporter):
     def __init__(self, repo):
         self.repo = repo
         self.unpushed_heads = []
@@ -38,12 +38,12 @@ class UnpushedRemotesOfRepoReport(Report):
         ])
 
 
-class UnpushedRemotesReport(Report):
+class UnpushedRemotesReporter(Reporter):
     unpushed_repo_reports = []
 
     def __init__(self, repos):
         for repo in repos:
-            report = UnpushedRemotesOfRepoReport(repo)
+            report = UnpushedRemotesOfRepoReporter(repo)
             if str(report) != "":
                 self.unpushed_repo_reports.append(report)
 
@@ -58,3 +58,36 @@ class UnpushedRemotesReport(Report):
             return ""
         return "unpushed remotes:\n" + \
                "\n".join(map(str, self.unpushed_repo_reports))
+
+def get_unpushed_branches(repo):
+    unpushed_heads = []
+    tracked_heads = get_tracked_heads(repo)
+    for head in tracked_heads:
+        remote = head.tracking_branch()
+        try:
+            re = compare_commits(head.commit, remote.commit)
+            if not re:
+                pass
+            elif re > 0:
+                unpushed_heads.append((head, "before"))
+            elif re < 0:
+                pass
+        except ValueError:
+            # self.unpushed_heads.append((head, "error"))
+            pass
+            # print("error with ", head, remote)
+    return unpushed_heads
+
+
+def get_unpushed_branches_report(repos):
+    unpushed_heads = []
+    for repo in repos:
+        repo_merged_heads = get_unpushed_branches(repo)
+        unpushed_heads.extend(repo_merged_heads)
+    report = GitReport(
+        'unpushed',
+        'unpushed branches',
+        GIT_REPORT_LEVEL_WARNING,
+        unpushed_heads,
+        [])
+    return report

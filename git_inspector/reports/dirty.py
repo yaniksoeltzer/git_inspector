@@ -1,8 +1,8 @@
 from git_inspector.common import filter_dirty_repos
-from git_inspector.reports.report import Report
+from git_inspector.reports.git_report import Reporter, GitReport, GIT_REPORT_LEVEL_ALERT
 
 
-class DirtyReposReport(Report):
+class DirtyReposReporter(Reporter):
     dirty_repo_paths = []
 
     def __init__(self, repos):
@@ -26,3 +26,15 @@ class DirtyReposReport(Report):
                     lambda path: f"     {path}",
                     self.dirty_repo_paths
                 ))
+
+
+
+def get_dirt_repo_report(repos):
+    dirty_repos = filter_dirty_repos(repos)
+    report = GitReport(
+        'dirty',
+        'dirty repositories',
+        GIT_REPORT_LEVEL_ALERT,
+        dirty_repos,
+        [])
+    return report
