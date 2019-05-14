@@ -1,38 +1,6 @@
 from git_inspector.common import get_tracked_heads, compare_commits
 from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_WARNING
 
-    def number_of_warnings(self):
-        return len(self.unpushed_heads)
-
-    def __str__(self):
-        if len(self.unpushed_heads) == 0:
-            return ""
-        return "\n".join([
-            f"     {self.repo.working_tree_dir}  {f'@{head}' if str(head) != 'master' else ''}" for head, re in
-            self.unpushed_heads
-        ])
-
-
-class UnpushedRemotesReporter(Reporter):
-    unpushed_repo_reports = []
-
-    def __init__(self, repos):
-        for repo in repos:
-            report = UnpushedRemotesOfRepoReporter(repo)
-            if str(report) != "":
-                self.unpushed_repo_reports.append(report)
-
-    def number_of_alerts(self):
-        return 0
-
-    def number_of_warnings(self):
-        return sum(map(lambda x:x.number_of_warnings(),self.unpushed_repo_reports))
-
-    def __str__(self):
-        if len(self.unpushed_repo_reports) == 0:
-            return ""
-        return "unpushed remotes:\n" + \
-               "\n".join(map(str, self.unpushed_repo_reports))
 
 def get_unpushed_branches(repo):
     unpushed_heads = []

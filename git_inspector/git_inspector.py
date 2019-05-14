@@ -1,7 +1,7 @@
 from git import Repo
 from git_inspector.py_find import find_git_repository_paths
 from git_inspector.report_formatter import format_git_reports
-from git_inspector.reports import GitInspectorReporter, Reporter, get_git_reports
+from git_inspector.reports import get_git_reports
 
 
 def inspect_all():
@@ -15,7 +15,7 @@ def inspect_all():
     #exit(exit_status)
 
 
-def exit_status_for(report: Reporter):
+def exit_status_for(report):
     if report.number_of_alerts() > 0:
         return 1
     else:
