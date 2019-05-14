@@ -1,30 +1,5 @@
 from git_inspector.common import get_tracked_heads, compare_commits
-from git_inspector.reports.git_report import Reporter, GitReport, GIT_REPORT_LEVEL_WARNING
-
-
-class UnpushedRemotesOfRepoReporter(Reporter):
-    def __init__(self, repo):
-        self.repo = repo
-        self.unpushed_heads = []
-
-        tracked_heads = get_tracked_heads(repo)
-        for head in tracked_heads:
-            remote = head.tracking_branch()
-            try:
-                re = compare_commits(head.commit, remote.commit)
-                if not re:
-                    pass
-                elif re > 0:
-                    self.unpushed_heads.append((head, "before"))
-                elif re < 0:
-                    pass
-            except ValueError:
-                # self.unpushed_heads.append((head, "error"))
-                pass
-                # print("error with ", head, remote)
-
-    def number_of_alerts(self):
-        return 0
+from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_WARNING
 
     def number_of_warnings(self):
         return len(self.unpushed_heads)
@@ -69,7 +44,7 @@ def get_unpushed_branches(repo):
             if not re:
                 pass
             elif re > 0:
-                unpushed_heads.append((head, "before"))
+                unpushed_heads.append(head)
             elif re < 0:
                 pass
         except ValueError:
@@ -88,6 +63,7 @@ def get_unpushed_branches_report(repos):
         'unpushed',
         'unpushed branches',
         GIT_REPORT_LEVEL_WARNING,
-        unpushed_heads,
-        [])
+        [],
+        unpushed_heads
+    )
     return report
