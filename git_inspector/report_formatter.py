@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from git_inspector.config import COLOR_ALERT, COLOR_WARNING, COLOR_RESET, COLOR_SUCCESS
+from git_inspector.config import *
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
@@ -65,4 +65,4 @@ def git_repo_repr(repo: Repo):
 
 
 def git_head_repr(head: Head):
-    return f"{head.repo.working_tree_dir}  {f'@{head}' if not is_master_branch(head) else ''}"
+    return f"{head.repo.working_tree_dir}  {f'{COLOR_BRANCH_TAG}@{head}{COLOR_RESET}' if not is_master_branch(head) else ''}"
