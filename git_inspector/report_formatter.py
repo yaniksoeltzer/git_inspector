@@ -29,10 +29,10 @@ def format_git_report(git_report: GitReport):
     git_repo_repr_str = map(indent_string, map(git_repo_repr, git_report.repos))
     git_head_repr_str = map(indent_string, map(git_head_repr, git_report.heads))
 
-    report_repr_str = \
-        indicator_line + "\n" \
-        + "\n".join(git_repo_repr_str) \
-        + "\n".join(git_head_repr_str)
+    lines = [indicator_line]
+    lines.extend(git_repo_repr_str)
+    lines.extend(git_head_repr_str)
+    report_repr_str = "\n".join(lines)
 
     return report_repr_str
 
