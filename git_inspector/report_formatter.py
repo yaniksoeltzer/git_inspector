@@ -1,4 +1,6 @@
 from collections import defaultdict
+
+from git_inspector.config import COLOR_ALERT, COLOR_WARNING, COLOR_RESET, COLOR_SUCCESS
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
@@ -44,9 +46,18 @@ def summary_string(git_reports: list, repos: list):
     for git_report in git_reports:
         git_report: GitReport = git_report
         a_cnt[git_report.alert_level] += len(git_report)
-    return f"{len(repos)} git repositories found: " \
+
+    summary = f"{len(repos)} git repositories found: " \
         f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts, " \
         f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings"
+
+    if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
+        summary = COLOR_ALERT + summary + COLOR_RESET
+    elif a_cnt[GIT_REPORT_LEVEL_WARNING] > 0:
+        summary = COLOR_WARNING + summary + COLOR_RESET
+    else:
+        summary = COLOR_SUCCESS + summary + COLOR_RESET
+    return summary
 
 
 def git_repo_repr(repo: Repo):
