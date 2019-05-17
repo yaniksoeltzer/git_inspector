@@ -7,7 +7,7 @@ from git_inspector.reports import get_git_reports
 def inspect_all():
     repos = get_git_repos()
     reports = get_git_reports(repos)
-    formated_str = format_git_reports(reports)
+    formated_str = format_git_reports(reports,repos)
     print(formated_str)
     #report = GitInspectorReporter(repos)
     #print(report)

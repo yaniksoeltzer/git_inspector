@@ -1,9 +1,11 @@
+from collections import defaultdict
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
+from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING
 
 
-def format_git_reports(git_reports: list):
+def format_git_reports(git_reports: list, repos: list):
     git_reports = sorted(git_reports, key=lambda report: report.alert_level)
     git_reports_repr = [
         format_git_report(report)
@@ -13,6 +15,7 @@ def format_git_reports(git_reports: list):
         [r for r in git_reports_repr
          if r != ""]
     )
+    git_reports_repr_str += "\n" + summary_string(git_reports, repos)
     return git_reports_repr_str
 
 
@@ -34,6 +37,16 @@ def format_git_report(git_report: GitReport):
 
 def indent_string(string, indent=5):
     return " " * indent + string
+
+
+def summary_string(git_reports: list, repos: list):
+    a_cnt = defaultdict(int)
+    for git_report in git_reports:
+        git_report: GitReport = git_report
+        a_cnt[git_report.alert_level] += len(git_report)
+    return f"{len(repos)} git repositories found: " \
+        f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts, " \
+        f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings"
 
 
 def git_repo_repr(repo: Repo):
