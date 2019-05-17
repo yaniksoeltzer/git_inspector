@@ -7,19 +7,8 @@ from git_inspector.reports import get_git_reports
 def inspect_all():
     repos = get_git_repos()
     reports = get_git_reports(repos)
-    formated_str = format_git_reports(reports,repos)
-    print(formated_str)
-    #report = GitInspectorReporter(repos)
-    #print(report)
-    #exit_status = exit_status_for(report)
-    #exit(exit_status)
-
-
-def exit_status_for(report):
-    if report.number_of_alerts() > 0:
-        return 1
-    else:
-        return 0
+    formatted_str = format_git_reports(reports,repos)
+    print(formatted_str)
 
 
 def get_git_repos():

@@ -1,6 +1,5 @@
 import os
 import subprocess
-
 from git_inspector.config import EXCLUDED_DIRS
 
 

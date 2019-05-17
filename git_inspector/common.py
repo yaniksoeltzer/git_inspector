@@ -1,4 +1,4 @@
-from git import Commit, Reference
+from git import Commit
 import logging
 
 
@@ -24,6 +24,10 @@ def get_non_master_branches(repo):
     return list(filter(lambda x: not is_master_branch(x), repo.heads))
 
 
+def is_ancestors_of(ancestor: Commit, commit: Commit):
+    return depth_search_commit([commit], [], ancestor)
+
+
 def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept=0):
     if len(fringe) == 0:
         return None
@@ -42,10 +46,6 @@ def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept
     if dept is not None:
         return dept + 1
     return None
-
-
-def is_ancestors_of(ancestor: Commit, commit: Commit):
-    return depth_search_commit([commit], [], ancestor)
 
 
 def filter_dirty_repos(repos):

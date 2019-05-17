@@ -11,7 +11,6 @@ def get_merged_heads(repo):
             depth = is_ancestors_of(ancestor=non_master.commit, commit=master.commit)
             if not depth:
                 pass
-                # not tracked
             else:# depth >= 0:
                 merged_heads.append(non_master)
     return merged_heads

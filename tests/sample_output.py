@@ -1,7 +1,5 @@
 from tempfile import TemporaryDirectory
-
 from git import Repo
-
 from git_inspector.report_formatter import format_git_reports
 from git_inspector.reports import GitReport, GIT_REPORT_LEVEL
 
@@ -16,7 +14,7 @@ def get_sample_output():
 def get_sample_repos():
     names = ["repo_a", "repo_b"]
     dirs = [TemporaryDirectory(suffix=f"_{name}")
-             for name in names]
+            for name in names]
     repos = [
         Repo.init(dir.name)
         for name, dir in zip(names, dirs)

@@ -1,5 +1,4 @@
 from collections import defaultdict
-
 from git_inspector.config import *
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
