@@ -1,24 +1,26 @@
-from git_inspector.common import get_tracked_heads, compare_commits
+import logging
+
+from git import Repo, Head
+
+from git_inspector.common import get_tracked_heads, is_ancestors_of
 from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_WARNING
 
 
-def get_unpushed_branches(repo):
+def get_unpushed_branches(repo:Repo):
     unpushed_heads = []
     tracked_heads = get_tracked_heads(repo)
     for head in tracked_heads:
         remote = head.tracking_branch()
         try:
-            re = compare_commits(head.commit, remote.commit)
-            if not re:
+            re = is_ancestors_of(ancestor=remote.commit, commit=head.commit)
+            if re is None:
                 pass
-            elif re > 0:
+            elif re == 0:
+                pass
+            else: #re > 0:
                 unpushed_heads.append(head)
-            elif re < 0:
-                pass
         except ValueError:
-            # self.unpushed_heads.append((head, "error"))
-            pass
-            # print("error with ", head, remote)
+            logging.warning(f"todo: check {repo.working_dir}")
     return unpushed_heads
 
 

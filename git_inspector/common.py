@@ -1,3 +1,6 @@
+from git import Commit, Reference
+import logging
+
 
 def get_tracked_heads(repo):
     return list(filter(
@@ -21,26 +24,28 @@ def get_non_master_branches(repo):
     return list(filter(lambda x: not is_master_branch(x), repo.heads))
 
 
-def compare_commits(commit_1, commit_2):
-    """
-    shows the relation between commit_1 and commit_2
-    like doing commit_1 - commit_2
-    a positive return value implies that commit_2 is a parent of commit_1
-        aka. initial <-- ... <-- commit_2 <-- ... <-- commit_1
-    a negative return value implies that commit_1 is a parent of commit_2
-        aka. initial <-- ... <-- commit_1 <-- ... <-- commit_2
-    returns zero if commits are equal,
-    returns None, if neither one commit is the parent of the other.
-    """
-    if commit_1.hexsha == commit_2.hexsha:
+def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept=0):
+    if len(fringe) == 0:
+        return None
+    if cur_dept >= 100:
+        logging.debug(f"max depth reached for is_ancestors_of of {goal_node.repo.working_dir}")
+        return None
+    if goal_node in fringe:
         return 0
-    com_1_parent_hex = [p.hexsha for p in commit_1.parents]
-    if commit_2.hexsha in com_1_parent_hex:
-        return 1
-    com_2_parent_hex = [p.hexsha for p in commit_2.parents]
-    if commit_1.hexsha in com_2_parent_hex:
-        return -1
+    new_fringe = []
+    for fring in fringe:
+        f_parents = fring.parents
+        new_fringe.extend(f_parents)
+    new_fringe = [x for x in new_fringe if x not in visited]
+    visited += fringe
+    dept = depth_search_commit(new_fringe, visited, goal_node, cur_dept+1)
+    if dept is not None:
+        return dept + 1
     return None
+
+
+def is_ancestors_of(ancestor: Commit, commit: Commit):
+    return depth_search_commit([commit], [], ancestor)
 
 
 def filter_dirty_repos(repos):

@@ -8,8 +8,11 @@ def get_merged_heads(repo):
     if master:
         non_masters = get_non_master_branches(repo)
         for non_master in non_masters:
-            cmp = compare_commits(master.commit, non_master.commit)
-            if cmp and cmp >= 0:
+            depth = is_ancestors_of(ancestor=non_master.commit, commit=master.commit)
+            if not depth:
+                pass
+                # not tracked
+            else:# depth >= 0:
                 merged_heads.append(non_master)
     return merged_heads
 
@@ -20,8 +23,8 @@ def get_merged_branches_report(repos):
         repo_merged_heads = get_merged_heads(repo)
         merged_heads.extend(repo_merged_heads)
     merged_branches_report = GitReport(
-        'merged_branches',
-        'merged branches',
+        'master_merged_branches',
+        'branches merged into master',
         GIT_REPORT_LEVEL_INFO,
         [],
         merged_heads)
