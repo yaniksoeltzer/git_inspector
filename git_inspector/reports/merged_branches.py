@@ -1,5 +1,5 @@
 from git_inspector.common import *
-from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_INFO
+from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_HINT
 
 
 def get_merged_heads(repo):
@@ -25,7 +25,7 @@ def get_merged_branches_report(repos):
     merged_branches_report = GitReport(
         'master_merged_branches',
         'branches merged into master',
-        GIT_REPORT_LEVEL_INFO,
+        GIT_REPORT_LEVEL_HINT,
         [],
         merged_heads)
     return merged_branches_report

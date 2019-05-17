@@ -4,7 +4,7 @@ from git_inspector.config import *
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
-from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING,GIT_REPORT_LEVEL_INFO
+from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING,GIT_REPORT_LEVEL_HINT
 
 
 def format_git_reports(git_reports: list, repos: list):
@@ -50,7 +50,7 @@ def summary_string(git_reports: list, repos: list):
     summary = f"{len(repos)} git repositories found: " \
         f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts, " \
         f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings and " \
-        f"{a_cnt[GIT_REPORT_LEVEL_INFO]} hints"
+        f"{a_cnt[GIT_REPORT_LEVEL_HINT]} hints"
 
     if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
         summary = COLOR_ALERT + summary + COLOR_RESET
