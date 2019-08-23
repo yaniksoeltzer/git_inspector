@@ -12,7 +12,8 @@ then
 fi
 
 # copy and install venv
-cp -r . ${INSTALL_DIR}
+sudo mkdir ${INSTALL_DIR}
+sudo cp -r . ${INSTALL_DIR}
 cd ${INSTALL_DIR}
 python3 -m pip install -r requirements.txt
 
