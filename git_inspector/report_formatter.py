@@ -3,7 +3,7 @@ from git_inspector.config import *
 from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
-from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING,GIT_REPORT_LEVEL_HINT
+from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING, GIT_REPORT_LEVEL_HINT
 
 
 def format_git_reports(git_reports: list, repos: list):
@@ -11,12 +11,13 @@ def format_git_reports(git_reports: list, repos: list):
     git_reports_repr = [
         format_git_report(report)
         for report in git_reports
+    ] + [
+        summary_string(git_reports, repos)
     ]
     git_reports_repr_str = "\n".join(
-        [r for r in git_reports_repr
-         if r != ""]
+        [f for f in git_reports_repr
+         if f != ""]
     )
-    git_reports_repr_str += "\n" + summary_string(git_reports, repos)
     return git_reports_repr_str
 
 
