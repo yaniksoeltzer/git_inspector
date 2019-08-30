@@ -9,6 +9,13 @@ def get_tracked_heads(repo):
     ))
 
 
+def get_untracked_heads(repo):
+    return list(filter(
+        lambda head: head.tracking_branch() is None,
+        repo.heads
+    ))
+
+
 def is_master_branch(head):
     return head.name == 'master'
 
