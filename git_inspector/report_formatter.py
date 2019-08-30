@@ -47,10 +47,27 @@ def summary_string(git_reports: list, repos: list):
         git_report: GitReport = git_report
         a_cnt[git_report.alert_level] += len(git_report)
 
-    summary = f"{len(repos)} git repositories found: " \
-        f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts, " \
-        f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings and " \
-        f"{a_cnt[GIT_REPORT_LEVEL_HINT]} hints"
+    if a_cnt[GIT_REPORT_LEVEL_ALERT] == 0 \
+            and a_cnt[GIT_REPORT_LEVEL_WARNING] == 0 \
+            and a_cnt[GIT_REPORT_LEVEL_HINT] == 0:
+        summary = f"{len(repos)} git repositories found. Everything looks fine :D"
+        summary = COLOR_SUCCESS + summary + COLOR_RESET
+        return summary
+
+    summary = f"{len(repos)} git repositories found "
+    sss = []
+    if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
+        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts")
+    if a_cnt[GIT_REPORT_LEVEL_WARNING] > 0:
+        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings")
+    if a_cnt[GIT_REPORT_LEVEL_HINT] > 0:
+        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_HINT]} hints")
+    if len(sss) == 1:
+        summary += f"with {sss[0]}."
+    if len(sss) == 2:
+        summary += f"with {sss[0]} and {sss[1]}."
+    if len(sss) == 3:
+        summary += f"with {sss[0]}, {sss[1]} and {sss[2]}."
 
     if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
         summary = COLOR_ALERT + summary + COLOR_RESET
