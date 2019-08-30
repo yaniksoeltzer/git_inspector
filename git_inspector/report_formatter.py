@@ -42,10 +42,7 @@ def indent_string(string, indent=5):
 
 
 def summary_string(git_reports: list, repos: list):
-    a_cnt = defaultdict(int)
-    for git_report in git_reports:
-        git_report: GitReport = git_report
-        a_cnt[git_report.alert_level] += len(git_report)
+    a_cnt = count_git_report_alert_level(git_reports)
 
     if a_cnt[GIT_REPORT_LEVEL_ALERT] == 0 \
             and a_cnt[GIT_REPORT_LEVEL_WARNING] == 0 \
@@ -76,6 +73,14 @@ def summary_string(git_reports: list, repos: list):
     else:
         summary = COLOR_SUCCESS + summary + COLOR_RESET
     return summary
+
+
+def count_git_report_alert_level(git_reports):
+    a_cnt = defaultdict(int)
+    for git_report in git_reports:
+        git_report: GitReport = git_report
+        a_cnt[git_report.alert_level] += len(git_report)
+    return a_cnt
 
 
 def git_repo_repr(repo: Repo):
