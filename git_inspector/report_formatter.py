@@ -29,9 +29,11 @@ def format_git_report(git_report: GitReport):
     git_repo_repr_str = map(indent_string, map(git_repo_repr, git_report.repos))
     git_head_repr_str = map(indent_string, map(git_head_repr, git_report.heads))
 
-    lines = [indicator_line]
+    lines = []
     lines.extend(git_repo_repr_str)
     lines.extend(git_head_repr_str)
+    lines = sorted(lines, key=str.casefold)
+    lines = [indicator_line]+lines
     report_repr_str = "\n".join(lines)
 
     return report_repr_str
