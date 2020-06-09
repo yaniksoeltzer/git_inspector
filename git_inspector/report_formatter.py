@@ -25,7 +25,7 @@ def format_git_report(git_report: GitReport):
     if git_report.is_empty():
         return ""
 
-    indicator_line = f"{git_report.description}:"
+    indicator_line = f"{COLORS[git_report.alert_level]}{git_report.description}:{COLOR_RESET}"
     git_repo_repr_str = map(indent_string, map(git_repo_repr, git_report.repos))
     git_head_repr_str = map(indent_string, map(git_head_repr, git_report.heads))
 
@@ -53,27 +53,22 @@ def summary_string(git_reports: list, repos: list):
         summary = COLOR_SUCCESS + summary + COLOR_RESET
         return summary
 
-    summary = f"{len(repos)} git repositories found "
+    summary = f"{SUMMARY_COLOR_NOT_CLEAN}{len(repos)} git repositories found {COLOR_RESET}"
+
     sss = []
     if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
-        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts")
+        sss.append(f"{COLOR_ALERT}{a_cnt[GIT_REPORT_LEVEL_ALERT]} alerts{COLOR_RESET}")
     if a_cnt[GIT_REPORT_LEVEL_WARNING] > 0:
-        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings")
+        sss.append(f"{COLOR_WARNING}{a_cnt[GIT_REPORT_LEVEL_WARNING]} warnings{COLOR_RESET}")
     if a_cnt[GIT_REPORT_LEVEL_HINT] > 0:
-        sss.append(f"{a_cnt[GIT_REPORT_LEVEL_HINT]} hints")
+        sss.append(f"{COLOR_HINT}{a_cnt[GIT_REPORT_LEVEL_HINT]} hints{COLOR_RESET}")
     if len(sss) == 1:
-        summary += f"with {sss[0]}."
+        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}."
     if len(sss) == 2:
-        summary += f"with {sss[0]} and {sss[1]}."
+        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[1]}{SUMMARY_COLOR_NOT_CLEAN}."
     if len(sss) == 3:
-        summary += f"with {sss[0]}, {sss[1]} and {sss[2]}."
+        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}{SUMMARY_COLOR_NOT_CLEAN}, {sss[1]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[2]}{SUMMARY_COLOR_NOT_CLEAN}."
 
-    if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
-        summary = COLOR_ALERT + summary + COLOR_RESET
-    elif a_cnt[GIT_REPORT_LEVEL_WARNING] > 0:
-        summary = COLOR_WARNING + summary + COLOR_RESET
-    else:
-        summary = COLOR_SUCCESS + summary + COLOR_RESET
     return summary
 
 
