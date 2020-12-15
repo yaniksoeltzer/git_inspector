@@ -1,4 +1,8 @@
 # Git-Inspector
+
+
+Unit Tests: [![<yaniksoeltzer>](https://circleci.com/gh/yaniksoeltzer/git_inspector.svg?style=svg)](https://circleci.com/gh/yaniksoeltzer/git_inspector)
+
 A python project which inspects git repositories.
 ```
 > git_inspector
