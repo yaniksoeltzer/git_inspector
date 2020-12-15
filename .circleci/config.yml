@@ -14,6 +14,11 @@ jobs:
       - run:
           command: python3 -m pytest
           name: pytest unittests
+      - run:
+          command: python3 -m pytest --cov=git_inspector --cov-report xml
+          name: pytest code coverage
+      - store_artifacts:
+          path: coverage
 
 workflows:
   main:
