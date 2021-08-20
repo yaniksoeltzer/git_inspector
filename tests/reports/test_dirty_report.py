@@ -6,25 +6,19 @@ import pytest
 from git import Repo
 
 from git_inspector.reports.dirty import get_dirty_report
+from tests.reports.common import create_clean_repo, create_one_file_repo
 
 
 @pytest.fixture
 def clean_repo():
-    with TemporaryDirectory() as directory:
-        repo = Repo.init(os.path.join(directory, 'first_repo'))
+    with create_clean_repo() as repo:
         yield repo
 
 
 @pytest.fixture
 def one_file_repo():
-    with TemporaryDirectory() as directory:
-        repo_directory = os.path.join(directory, 'first_repo')
-        repo = Repo.init(repo_directory)
-        tracked_file = os.path.join(repo_directory, 'tracked_file')
-        Path(tracked_file).touch()
-        repo.index.add(["."])
-        repo.index.commit("initial commit")
-        yield repo, tracked_file
+    with create_one_file_repo() as (repo, file):
+        yield repo, file
 
 
 def test_return_none_on_clean_repo(clean_repo: Repo):
