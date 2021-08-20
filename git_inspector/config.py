@@ -1,9 +1,9 @@
 
 EXCLUDED_DIRS = [
-    "*/Trash/*",
+    "Trash",
     "/proc",
-    "~.cache",
-    "*/node_modules/*",
+    ".cache",
+    "node_modules",
 ]
 
 
