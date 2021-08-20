@@ -3,7 +3,6 @@ from git_inspector.config import EXCLUDED_DIRS
 
 
 def find_git_repositories(search_paths, excluded_dirs=EXCLUDED_DIRS):
-    found_paths = []
     for search_path in search_paths:
         if any([search_path.startswith(e) for e in excluded_dirs]):
             continue
@@ -13,7 +12,5 @@ def find_git_repositories(search_paths, excluded_dirs=EXCLUDED_DIRS):
             if root in excluded_dirs:
                 dirs[:] = []
             dirs[:] = [d for d in dirs if d not in excluded_dirs]
-            print(root, dirs, files)
             if '.git' in dirs:
-                found_paths.append(root)
-    return found_paths
+                yield root
