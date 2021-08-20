@@ -55,6 +55,3 @@ def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept
     return None
 
 
-def filter_dirty_repos(repos):
-    dirty_repos = filter(lambda x: x.is_dirty(), repos)
-    return list(dirty_repos)
