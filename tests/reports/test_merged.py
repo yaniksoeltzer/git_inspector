@@ -2,7 +2,7 @@ from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
 from git_inspector.reports.merged import get_merged_report
-from tests.testutils import create_repo, add_n_commits
+from tests.testutils import create_repo, add_n_commits, add_merged_branch
 
 
 @pytest.fixture
@@ -19,6 +19,6 @@ def test_return_none_on_clean_repo(repo: Repo):
 
 
 def test_return_something_on_merged_branch_repo(thick_repo: Repo):
-    thick_repo.create_head('merged_branch', 'HEAD~3')
+    add_merged_branch(thick_repo)
     report = get_merged_report(thick_repo)
     assert report is not None

@@ -1,7 +1,6 @@
 import os
-from contextlib import contextmanager
 from pathlib import Path
-from tempfile import TemporaryDirectory
+
 from git import Repo
 
 
@@ -11,10 +10,14 @@ def create_repo(repo_directory) -> Repo:
     return repo
 
 
-def create_dirty_repo(repo_directory):
+def create_dirty_repo(repo_directory) -> Repo:
     repo = create_repo(repo_directory)
     make_repo_dirty(repo)
     return repo
+
+
+def create_cloned_repo(repo_directory, remote_repo: Repo) -> Repo:
+    return remote_repo.clone(repo_directory)
 
 
 def make_repo_dirty(repo: Repo):
@@ -39,3 +42,8 @@ def add_tracked_branch(local_repo, remote_repo, prefix: str):
     lb = local_repo.create_head(local_branch_name)
     lb.set_tracking_branch(origin.refs[remote_branch_name])
     return lb, tb
+
+
+def add_merged_branch(repo: Repo):
+    repo.create_head('merged_branch', 'HEAD~1')
+

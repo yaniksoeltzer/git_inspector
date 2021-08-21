@@ -24,5 +24,7 @@ def remote_repo():
 @pytest.fixture
 def cloned_repo(remote_repo: Repo):
     with TemporaryDirectory() as directory:
-        local_repo = remote_repo.clone(directory)
-        yield local_repo
+        create_cloned_repo(
+            repo_directory=directory,
+            remote_repo=remote_repo
+        )
