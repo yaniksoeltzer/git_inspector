@@ -1,5 +1,6 @@
 from git import Repo
 from git_inspector.reports.untracked import get_untracked_report
+from tests.testutils import add_tracked_branch
 
 
 def test_return_something_on_local_repo(repo: Repo):
@@ -15,17 +16,13 @@ def test_return_none_on_tracked_repo(cloned_repo):
 def test_multiple_braches(remote_repo, cloned_repo):
     n_tracked_branches = 3
     n_untracked_branches = 4
-    origin = cloned_repo.remotes.origin
 
     for i in range(n_tracked_branches):
-        # create emote ranches
-        remote_branch_name = f'remote_tracked_{i}'
-        remote_repo.create_head(remote_branch_name)
-        origin.fetch()
-        # create local branches
-        local_branch_name = f'tracked_{i}'
-        lb = cloned_repo.create_head(local_branch_name)
-        lb.set_tracking_branch(origin.refs[remote_branch_name])
+        lb, _ = add_tracked_branch(
+            local_repo=cloned_repo,
+            remote_repo=remote_repo,
+            prefix=f"{i}"
+        )
 
     for i in range(n_untracked_branches):
         local_branch_name = f'untracked_{i}'

@@ -1,5 +1,6 @@
 from git import Repo
 from git_inspector.reports.unpushed import get_unpushed_report
+from tests.testutils import add_tracked_branch
 
 
 def test_return_none_on_local_repo(repo: Repo):
@@ -14,47 +15,28 @@ def test_return_something_on_unpushed_repo(cloned_repo):
 
 
 def test_multiple_up_to_date_branches(remote_repo, cloned_repo):
-    #
-    # master -> origin/master
-    # branch_1 -> origin/remote_1
     n_branches = 3
-    origin = cloned_repo.remotes.origin
     for i in range(n_branches):
-        # create emote ranches
-        remote_branch_name = f'remote_{i}'
-        remote_repo.create_head(remote_branch_name)
-        origin.fetch()
-        # create local branches
-        local_branch_name = f'branch_{i}'
-        lb = cloned_repo.create_head(local_branch_name)
-        lb.set_tracking_branch(origin.refs[remote_branch_name])
-
+        add_tracked_branch(
+            local_repo=cloned_repo,
+            remote_repo=remote_repo,
+            prefix=f"{i}"
+        )
     report = get_unpushed_report(cloned_repo)
     assert report is None
 
 
 def test_multiple_branches(remote_repo, cloned_repo):
-    # master -> origin/master (up to date)
-    # branch_{i} -> origin/remote_{i} (unpushed)
     n_branches = 3
-    origin = cloned_repo.remotes.origin
-
     for i in range(n_branches):
-        # create emote ranches
-        remote_branch_name = f'remote_{i}'
-        remote_repo.create_head(remote_branch_name)
-        origin.fetch()
-        # create local branches
-        local_branch_name = f'branch_{i}'
-        lb = cloned_repo.create_head(local_branch_name)
-        lb.set_tracking_branch(origin.refs[remote_branch_name])
-
-        # commit to local_branch
+        lb, _ = add_tracked_branch(
+            local_repo=cloned_repo,
+            remote_repo=remote_repo,
+            prefix=f"{i}"
+        )
         lb.checkout()
-        cloned_repo.index.commit(f"local only commit on {local_branch_name}")
-
+        cloned_repo.index.commit(f"local only commit on {lb}")
     report = get_unpushed_report(cloned_repo)
-
     assert report is not None
     assert report.branches is not None
     assert len(report.branches) == n_branches

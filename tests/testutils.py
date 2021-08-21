@@ -23,17 +23,19 @@ def make_repo_dirty(repo: Repo):
     repo.index.add(["."])
 
 
-def add_n_commits(repo:Repo, n_commits):
+def add_n_commits(repo: Repo, n_commits):
     for i in range(n_commits):
         repo.index.commit(f"commit-changed-{i}")
 
 
-@contextmanager
-def create_remote_and_local_repo():
-    with TemporaryDirectory() as directory:
-        remote_directory = os.path.join(directory, 'remote')
-        remote_repo = create_repo(remote_directory)
-
-        local_directory = os.path.join(directory, "local")
-        local_repo = remote_repo.clone(local_directory)
-        yield remote_repo, local_repo
+def add_tracked_branch(local_repo, remote_repo, prefix: str):
+    # create remote branch
+    remote_branch_name = f'remote_{prefix}'
+    tb = remote_repo.create_head(remote_branch_name)
+    origin = local_repo.remotes.origin
+    origin.fetch()
+    # create local branches
+    local_branch_name = f'branch_{prefix}'
+    lb = local_repo.create_head(local_branch_name)
+    lb.set_tracking_branch(origin.refs[remote_branch_name])
+    return lb, tb
