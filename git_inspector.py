@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import os
 import argparse
-from git_inspector import inspect_all
-from git_inspector.report_formatter import format_git_reports, count_git_report_alert_level
+from collections import Counter
+from typing import List
+
+from git_inspector import inspect
 
 # parse arguments
 from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING
@@ -13,12 +15,11 @@ parser.add_argument('paths', metavar='path', nargs='*', default='.',
 args = vars(parser.parse_args())
 absolute_paths = [os.path.abspath(x) for x in args['paths']]
 
+output = inspect(paths=absolute_paths)
+print(output)
 
-repos, reports = inspect_all(paths=absolute_paths)
-formatted_str = format_git_reports(reports, repos)
-print(formatted_str)
-
-a_cnt = count_git_report_alert_level(git_reports=reports)
+alert_level: List[int] = [r.report_type.alert_level for r in git_reports]
+a_cnt = Counter(alert_level)
 aw_cnt = a_cnt[GIT_REPORT_LEVEL_ALERT]+a_cnt[GIT_REPORT_LEVEL_WARNING]
 exit_code = min(255, aw_cnt)
 exit(exit_code)

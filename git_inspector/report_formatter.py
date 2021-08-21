@@ -1,27 +1,31 @@
-from collections import defaultdict
+from collections import Counter
+from typing import List
 from git_inspector.config import *
-from git_inspector.reports.git_report import GitReport
 from git import Head, Repo
 from git_inspector.common import is_master_branch
-from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING, GIT_REPORT_LEVEL_HINT
+from git_inspector.reports import *
 
 
-def format_git_reports(git_reports: list, repos: list):
-    git_reports = sorted(git_reports, key=lambda report: report.alert_level)
-    git_reports_repr = [
-        format_git_report(report)
-        for report in git_reports
-    ] + [
-        summary_string(git_reports, repos)
-    ]
-    git_reports_repr_str = "\n".join(
-        [f for f in git_reports_repr
-         if f != ""]
-    )
-    return git_reports_repr_str
+def format_git_reports(git_reports: List[Report], repos):
+    report_types: List[ReportType] = list(set(r.report_type for r in git_reports))
+    report_types = sorted(report_types, key=lambda rt: rt.alert_level)
+    output = []
+    for report_type in report_types:
+        output.append(report_type.description)
+        reports = [r for r in git_reports if r.report_type == report_type]
+        for report in reports:
+            working_dir = report.repo.working_dir
+            if report.branches is None:
+                output.append(working_dir)
+            else:
+                for branch in report.branches:
+                    output.append(working_dir + " @" + branch.name )
+
+    output.append(summary_string(git_reports, repos))
+    return "\n".join(output)
 
 
-def format_git_report(git_report: GitReport):
+def format_git_report(git_report):
     if git_report.is_empty():
         return ""
 
@@ -43,8 +47,10 @@ def indent_string(string, indent=5):
     return " " * indent + string
 
 
-def summary_string(git_reports: list, repos: list):
-    a_cnt = count_git_report_alert_level(git_reports)
+def summary_string(git_reports: list, repos):
+    alert_level: List[int] = [r.report_type.alert_level for r in git_reports]
+    alert_level_occurrences = Counter(alert_level)
+    a_cnt = alert_level_occurrences
 
     if a_cnt[GIT_REPORT_LEVEL_ALERT] == 0 \
             and a_cnt[GIT_REPORT_LEVEL_WARNING] == 0 \
@@ -71,13 +77,6 @@ def summary_string(git_reports: list, repos: list):
 
     return summary
 
-
-def count_git_report_alert_level(git_reports):
-    a_cnt = defaultdict(int)
-    for git_report in git_reports:
-        git_report: GitReport = git_report
-        a_cnt[git_report.alert_level] += len(git_report)
-    return a_cnt
 
 
 def git_repo_repr(repo: Repo):

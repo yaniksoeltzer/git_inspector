@@ -1,8 +1,6 @@
 import os
 from tempfile import TemporaryDirectory
-
 from git import Repo
-
 from git_inspector.find_git_repo import find_git_repositories
 
 

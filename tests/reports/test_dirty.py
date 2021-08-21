@@ -1,14 +1,15 @@
+from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
 
 from git_inspector.reports.dirty import get_dirty_report
-from tests.reports.common import create_clean_repo, create_one_file_repo
+from tests.testutils import create_clean_repo, create_one_file_repo
 
 
 @pytest.fixture
 def clean_repo():
-    with create_clean_repo() as repo:
-        yield repo
+    with TemporaryDirectory() as directory:
+        yield create_clean_repo(directory)
 
 
 @pytest.fixture
