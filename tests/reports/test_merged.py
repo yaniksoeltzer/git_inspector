@@ -4,7 +4,7 @@ import pytest
 from git import Repo
 
 from git_inspector.reports.merged import get_merged_report
-from tests.testutils import create_clean_repo, create_repo_with_n_commits
+from tests.testutils import create_clean_repo, add_n_commits
 
 
 @pytest.fixture
@@ -15,7 +15,9 @@ def clean_repo():
 
 @pytest.fixture
 def thick_repo():
-    with create_repo_with_n_commits(10) as repo:
+    with TemporaryDirectory() as directory:
+        repo = create_clean_repo(directory)
+        add_n_commits(repo, 10)
         yield repo
 
 

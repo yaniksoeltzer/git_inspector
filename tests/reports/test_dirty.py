@@ -3,7 +3,7 @@ import pytest
 from git import Repo
 
 from git_inspector.reports.dirty import get_dirty_report
-from tests.testutils import create_clean_repo, create_one_file_repo
+from tests.testutils import create_clean_repo, create_dirty_repo
 
 
 @pytest.fixture
@@ -13,9 +13,9 @@ def clean_repo():
 
 
 @pytest.fixture
-def one_file_repo():
-    with create_one_file_repo() as (repo, file):
-        yield repo, file
+def dirty_repo():
+    with TemporaryDirectory() as directory:
+        yield create_dirty_repo(directory)
 
 
 def test_return_none_on_clean_repo(clean_repo: Repo):
@@ -23,9 +23,6 @@ def test_return_none_on_clean_repo(clean_repo: Repo):
     assert report is None
 
 
-def test_return_something_on_dirty_repo(one_file_repo: Repo):
-    repo_dir, tracked_file = one_file_repo
-    with open(tracked_file, "w") as f:
-        f.write("changed")
-    report = get_dirty_report(repo_dir)
+def test_return_something_on_dirty_repo(dirty_repo: Repo):
+    report = get_dirty_report(dirty_repo)
     assert report is not None
