@@ -32,7 +32,7 @@ def get_non_master_branches(repo):
 
 
 def is_ancestors_of(ancestor: Commit, commit: Commit):
-    return depth_search_commit([commit], [], ancestor)
+    return depth_search_commit([commit], [], ancestor) is not None
 
 
 def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept=0):

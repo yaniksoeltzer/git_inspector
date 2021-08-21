@@ -8,7 +8,7 @@ merged_branch_report = ReportType(
 )
 
 
-def get_merged_branches_report(repo):
+def get_merged_report(repo):
     merged_heads = get_merged_heads(repo)
     if len(merged_heads) == 0:
         return None

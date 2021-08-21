@@ -1,36 +1,32 @@
-import logging
-from git import Repo
-from git_inspector.common import get_tracked_heads, is_ancestors_of
-from git_inspector.reports.git_report import GitReport, GIT_REPORT_LEVEL_WARNING
+from git import Repo, RemoteReference
+from git_inspector.common import is_ancestors_of
+from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
+
+unpushed_report = ReportType(
+    'unpushed',
+    'unpushed branches',
+    GIT_REPORT_LEVEL_WARNING
+)
 
 
-def get_unpushed_branches_report(repos):
+def get_unpushed_report(repo):
+    unpushed_branches = get_unpushed_branches(repo)
+    if len(unpushed_branches) > 0:
+        return Report(repo, unpushed_branches, unpushed_report)
+    else:
+        return None
+
+
+def get_unpushed_branches(repo: Repo):
     unpushed_heads = []
-    for repo in repos:
-        repo_merged_heads = get_unpushed_branches(repo)
-        unpushed_heads.extend(repo_merged_heads)
-    report = GitReport(
-        'unpushed',
-        'unpushed branches',
-        GIT_REPORT_LEVEL_WARNING,
-        [],
-        unpushed_heads
-    )
-    return report
-
-
-def get_unpushed_branches(repo:Repo):
-    unpushed_heads = []
-    tracked_heads = get_tracked_heads(repo)
-    for head in tracked_heads:
-        remote = head.tracking_branch()
-        try:
-            re = is_ancestors_of(ancestor=remote.commit, commit=head.commit)
-            if re is None:
-                pass
-            elif re > 0:
-                unpushed_heads.append(head)
-        except ValueError:
-            logging.warning(f"Error accessing {repo.working_dir}")
+    for head in repo.heads:
+        remote: RemoteReference = head.tracking_branch()
+        if remote is None:
+            continue
+        remote_commit = remote.commit
+        local_commit = head.commit
+        if remote_commit == local_commit:
+            continue
+        if is_ancestors_of(ancestor=remote_commit, commit=local_commit):
+            unpushed_heads.append(head)
     return unpushed_heads
-
