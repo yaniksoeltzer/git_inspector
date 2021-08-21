@@ -2,7 +2,7 @@ import pytest
 from git import Repo
 
 from git_inspector.reports.unpushed import get_unpushed_report
-from tests.reports.common import create_clean_repo, create_local_and_remote_repo
+from tests.reports.common import create_clean_repo, create_remote_and_local_repo
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def test_return_none_on_local_repo(clean_repo: Repo):
 
 
 def test_return_something_on_unpushed_repo():
-    with create_local_and_remote_repo() as (remote_repo, local_repo):
+    with create_remote_and_local_repo() as (remote_repo, local_repo):
         local_repo.index.commit("local-only-commit")
         report = get_unpushed_report(local_repo)
     assert report is not None
@@ -28,7 +28,7 @@ def test_multiple_up_to_date_branches():
     # master -> origin/master
     # branch_1 -> origin/remote_1
     n_branches = 3
-    with create_local_and_remote_repo() as (remote_repo, local_repo):
+    with create_remote_and_local_repo() as (remote_repo, local_repo):
         origin = local_repo.remotes.origin
 
         for i in range(n_branches):
@@ -50,7 +50,7 @@ def test_multiple_branches():
     # master -> origin/master (up to date)
     # branch_{i} -> origin/remote_{i} (unpushed)
     n_branches = 3
-    with create_local_and_remote_repo() as (remote_repo, local_repo):
+    with create_remote_and_local_repo() as (remote_repo, local_repo):
         origin = local_repo.remotes.origin
 
         for i in range(n_branches):
@@ -76,7 +76,7 @@ def test_multiple_branches():
 
 def test_outdated_branches():
     # commits on origin but not on local
-    with create_local_and_remote_repo() as (remote_repo, local_repo):
+    with create_remote_and_local_repo() as (remote_repo, local_repo):
         origin = local_repo.remotes.origin
         remote_repo.index.commit("remote only commit")
         origin.fetch()
