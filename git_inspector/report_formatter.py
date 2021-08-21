@@ -4,6 +4,17 @@ from git_inspector.config import *
 from git import Head, Repo
 from git_inspector.common import is_master_branch
 from git_inspector.reports import *
+from termcolor import colored
+
+
+INTENTS = 4
+REPORT_TYPE_COLOR = {
+    GIT_REPORT_LEVEL_ALERT: "red",
+    GIT_REPORT_LEVEL_WARNING: "yellow",
+    GIT_REPORT_LEVEL_HINT: "grey",
+}
+
+BRANCH_COLOR = "blue"
 
 
 def format_git_reports(git_reports: List[Report], repos):
@@ -11,40 +22,19 @@ def format_git_reports(git_reports: List[Report], repos):
     report_types = sorted(report_types, key=lambda rt: rt.alert_level)
     output = []
     for report_type in report_types:
-        output.append(report_type.description)
+        header = colored(report_type.description, REPORT_TYPE_COLOR[report_type.alert_level])
+        output.append(header)
         reports = [r for r in git_reports if r.report_type == report_type]
         for report in reports:
             working_dir = report.repo.working_dir
             if report.branches is None:
-                output.append(working_dir)
+                output.append(" " * INTENTS + working_dir)
             else:
                 for branch in report.branches:
-                    output.append(working_dir + " @" + branch.name )
+                    output.append(" " * INTENTS + working_dir + colored(" @" + branch.name, BRANCH_COLOR))
 
     output.append(summary_string(git_reports, repos))
     return "\n".join(output)
-
-
-def format_git_report(git_report):
-    if git_report.is_empty():
-        return ""
-
-    indicator_line = f"{COLORS[git_report.alert_level]}{git_report.description}:{COLOR_RESET}"
-    git_repo_repr_str = map(indent_string, map(git_repo_repr, git_report.repos))
-    git_head_repr_str = map(indent_string, map(git_head_repr, git_report.heads))
-
-    lines = []
-    lines.extend(git_repo_repr_str)
-    lines.extend(git_head_repr_str)
-    lines = sorted(lines, key=str.casefold)
-    lines = [indicator_line]+lines
-    report_repr_str = "\n".join(lines)
-
-    return report_repr_str
-
-
-def indent_string(string, indent=5):
-    return " " * indent + string
 
 
 def summary_string(git_reports: list, repos):
@@ -76,7 +66,6 @@ def summary_string(git_reports: list, repos):
         summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}{SUMMARY_COLOR_NOT_CLEAN}, {sss[1]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[2]}{SUMMARY_COLOR_NOT_CLEAN}."
 
     return summary
-
 
 
 def git_repo_repr(repo: Repo):
