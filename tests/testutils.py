@@ -5,14 +5,14 @@ from tempfile import TemporaryDirectory
 from git import Repo
 
 
-def create_clean_repo(repo_directory) -> Repo:
+def create_repo(repo_directory) -> Repo:
     repo = Repo.init(repo_directory)
     repo.index.commit("initial commit")
     return repo
 
 
 def create_dirty_repo(repo_directory):
-    repo = create_clean_repo(repo_directory)
+    repo = create_repo(repo_directory)
     make_repo_dirty(repo)
     return repo
 
@@ -32,7 +32,7 @@ def add_n_commits(repo:Repo, n_commits):
 def create_remote_and_local_repo():
     with TemporaryDirectory() as directory:
         remote_directory = os.path.join(directory, 'remote')
-        remote_repo = create_clean_repo(remote_directory)
+        remote_repo = create_repo(remote_directory)
 
         local_directory = os.path.join(directory, "local")
         local_repo = remote_repo.clone(local_directory)
