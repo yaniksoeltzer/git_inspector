@@ -1,2 +1,2 @@
-pdfkit
-htmlwebshot
+ansi2html
+html2image
