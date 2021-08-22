@@ -1,5 +1,5 @@
 from git import Repo, RemoteReference
-from git_inspector.common import is_ancestors_of
+from src.git_inspector import is_ancestors_of
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
 
 unpushed_report = ReportType(

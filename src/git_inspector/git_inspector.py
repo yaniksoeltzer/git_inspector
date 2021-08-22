@@ -1,7 +1,7 @@
 from git import Repo
-from git_inspector.find_git_repo import find_git_repositories
-from git_inspector.report_formatter import format_git_reports
-from git_inspector.reports import get_reports
+from src.git_inspector import find_git_repositories
+from src.git_inspector import format_git_reports
+from src.git_inspector import get_reports
 
 
 def inspect(paths):

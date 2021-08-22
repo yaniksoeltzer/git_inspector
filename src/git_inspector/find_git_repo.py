@@ -1,5 +1,5 @@
 import os
-from git_inspector.config import EXCLUDED_DIRS
+from src.git_inspector import EXCLUDED_DIRS
 
 
 def find_git_repositories(search_paths, excluded_dirs=EXCLUDED_DIRS):

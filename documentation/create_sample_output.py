@@ -1,7 +1,7 @@
 
 
 from test_setup import test_setup
-from git_inspector import inspect
+from src.git_inspector import inspect
 from ansi2html import Ansi2HTMLConverter
 from html2image import Html2Image
 

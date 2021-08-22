@@ -1,4 +1,3 @@
-from git_inspector.common import *
 from .report import ReportType, Report, GIT_REPORT_LEVEL_HINT
 
 merged_branch_report = ReportType(

@@ -1,9 +1,7 @@
 from collections import Counter
 from typing import List
-from git_inspector.config import *
 from git import Head, Repo
-from git_inspector.common import is_master_branch
-from git_inspector.reports import *
+from src.git_inspector import is_master_branch
 from termcolor import colored
 
 

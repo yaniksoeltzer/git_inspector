@@ -1,5 +1,5 @@
 from git import Repo
-from git_inspector.common import get_untracked_heads
+from src.git_inspector import get_untracked_heads
 
 from .report import Report, ReportType, GIT_REPORT_LEVEL_WARNING
 

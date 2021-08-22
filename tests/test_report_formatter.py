@@ -1,8 +1,8 @@
 from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
-from git_inspector.report_formatter import format_git_reports
-from git_inspector.reports import ReportType, GIT_REPORT_LEVEL_ALERT, Report, get_reports
+from src.git_inspector import format_git_reports
+from src.git_inspector import ReportType, GIT_REPORT_LEVEL_ALERT, Report, get_reports
 from tests.testutils import create_repo
 
 

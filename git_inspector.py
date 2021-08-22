@@ -4,10 +4,10 @@ import argparse
 from collections import Counter
 from typing import List
 
-from git_inspector import inspect
+from src.git_inspector import inspect
 
 # parse arguments
-from git_inspector.reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING
+from src.git_inspector import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING
 
 parser = argparse.ArgumentParser()
 parser.add_argument('paths', metavar='path', nargs='*', default='.',
