@@ -1,24 +1,19 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
+  python: circleci/python@1.4.0
 
 jobs:
   build-and-test:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
       - run:
-          command: python3 -m pytest
-          name: pytest unittests
-      - run:
-          command: python3 -m pytest --cov=git_inspector --cov-report xml
-          name: pytest code coverage
-      - store_artifacts:
-          path: coverage.xml
+          command: |
+            python -m pip install .
+            python -m pip install tox
+            python -m tox
+          name: Test
 
 workflows:
   main:
