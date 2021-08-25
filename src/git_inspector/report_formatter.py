@@ -1,6 +1,6 @@
 from collections import Counter
-from typing import List, Generator
-from git import Head, Repo
+from typing import List, Iterator
+from git import Head
 from termcolor import colored
 from .reports import *
 from .config import *
@@ -17,7 +17,7 @@ REPORT_TYPE_COLOR = {
 BRANCH_COLOR = "blue"
 
 
-def format_git_reports(git_reports: Generator[Report, None, None], n_repos):
+def format_git_reports(git_reports: Iterator[Report], n_repos: int):
     git_reports = [g for g in git_reports]
     report_types: List[ReportType] = list(set(r.report_type for r in git_reports))
     report_types = sorted(report_types, key=lambda rt: rt.alert_level)

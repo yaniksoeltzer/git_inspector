@@ -1,3 +1,5 @@
+from git import Repo
+
 from .report import *
 from .dirty import get_dirty_report
 from .merged import get_merged_report
@@ -12,9 +14,8 @@ REPORT_FUNCTIONS = [
 ]
 
 
-def get_reports(repos):
-    for repo in repos:
-        for get_report in REPORT_FUNCTIONS:
-            report = get_report(repo)
-            if report is not None:
-                yield report
+def get_reports(repo: Repo):
+    for get_report in REPORT_FUNCTIONS:
+        report = get_report(repo)
+        if report is not None:
+            yield report
