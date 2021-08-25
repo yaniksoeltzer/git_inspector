@@ -9,8 +9,7 @@ def test_find_git_directories(repo: Repo):
 
 
 def test_get_reports(dirty_repo: Repo):
-    reports = get_reports([dirty_repo, dirty_repo])
-    assert next(reports) is not None
+    reports = get_reports(dirty_repo)
     assert next(reports) is not None
 
 

@@ -29,12 +29,12 @@ def test_output_contains_working_directory():
 
 
 def test_clean_repo_output(repo: Repo):
-    reports = get_reports([repo])
+    reports = get_reports(repo)
     output = format_git_reports(reports, 10)
     assert repo.working_dir in output
 
 
 def test_dirty_repo_output(dirty_repo: Repo):
-    reports = get_reports([dirty_repo])
+    reports = get_reports(dirty_repo)
     output = format_git_reports(reports, 10)
     assert dirty_repo.working_dir in output
