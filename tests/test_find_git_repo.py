@@ -1,7 +1,7 @@
 import os
 from tempfile import TemporaryDirectory
 from git import Repo
-from src.git_inspector import find_git_repositories
+from git_inspector.find_git_repo import find_git_repositories
 
 
 def test_empty_directory():

@@ -1,5 +1,5 @@
 from git import Repo
-from src.git_inspector.reports.untracked import get_untracked_report
+from git_inspector.reports.untracked import get_untracked_report
 from tests.testutils import add_tracked_branch
 
 

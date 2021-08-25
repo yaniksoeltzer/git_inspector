@@ -1,5 +1,5 @@
 from git import Repo
-from src.git_inspector import get_untracked_heads
+from ..common import get_untracked_heads
 
 from .report import Report, ReportType, GIT_REPORT_LEVEL_WARNING
 
@@ -12,8 +12,9 @@ untracked_report = ReportType(
 
 def get_untracked_report(repo):
     untracked_branches = get_untracked_branches(repo)
+    branch_names = [h.name for h in untracked_branches]
     if len(untracked_branches) > 0:
-        return Report(repo, untracked_branches, untracked_report)
+        return Report(repo.working_dir, branch_names, untracked_report)
     else:
         return None
 

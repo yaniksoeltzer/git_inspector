@@ -1,5 +1,5 @@
 from git import Repo, RemoteReference
-from src.git_inspector import is_ancestors_of
+from ..common import is_ancestors_of
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
 
 unpushed_report = ReportType(
@@ -11,8 +11,9 @@ unpushed_report = ReportType(
 
 def get_unpushed_report(repo):
     unpushed_branches = get_unpushed_branches(repo)
+    branch_names = [h.name for h in unpushed_branches]
     if len(unpushed_branches) > 0:
-        return Report(repo, unpushed_branches, unpushed_report)
+        return Report(repo.working_dir, branch_names, unpushed_report)
     else:
         return None
 

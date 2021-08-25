@@ -1,8 +1,10 @@
 from collections import Counter
 from typing import List
 from git import Head, Repo
-from src.git_inspector import is_master_branch
 from termcolor import colored
+from .reports import *
+from .config import *
+from .common import is_master_branch
 
 
 INTENTS = 4
@@ -15,7 +17,7 @@ REPORT_TYPE_COLOR = {
 BRANCH_COLOR = "blue"
 
 
-def format_git_reports(git_reports: List[Report], repos):
+def format_git_reports(git_reports: List[Report], n_repos):
     report_types: List[ReportType] = list(set(r.report_type for r in git_reports))
     report_types = sorted(report_types, key=lambda rt: rt.alert_level)
     output = []
@@ -24,18 +26,18 @@ def format_git_reports(git_reports: List[Report], repos):
         output.append(header)
         reports = [r for r in git_reports if r.report_type == report_type]
         for report in reports:
-            working_dir = report.repo.working_dir
+            working_dir = report.repo
             if report.branches is None:
                 output.append(" " * INTENTS + working_dir)
             else:
                 for branch in report.branches:
-                    output.append(" " * INTENTS + working_dir + colored(" @" + branch.name, BRANCH_COLOR))
+                    output.append(" " * INTENTS + working_dir + colored(" @" + branch, BRANCH_COLOR))
 
-    output.append(summary_string(git_reports, repos))
+    output.append(summary_string(git_reports, n_repos))
     return "\n".join(output)
 
 
-def summary_string(git_reports: list, repos):
+def summary_string(git_reports: list, n_repos: int):
     alert_level: List[int] = [r.report_type.alert_level for r in git_reports]
     alert_level_occurrences = Counter(alert_level)
     a_cnt = alert_level_occurrences
@@ -43,11 +45,11 @@ def summary_string(git_reports: list, repos):
     if a_cnt[GIT_REPORT_LEVEL_ALERT] == 0 \
             and a_cnt[GIT_REPORT_LEVEL_WARNING] == 0 \
             and a_cnt[GIT_REPORT_LEVEL_HINT] == 0:
-        summary = f"{len(repos)} git repositories found. Everything looks fine :D"
+        summary = f"{n_repos} git repositories found. Everything looks fine :D"
         summary = COLOR_SUCCESS + summary + COLOR_RESET
         return summary
 
-    summary = f"{SUMMARY_COLOR_NOT_CLEAN}{len(repos)} git repositories found {COLOR_RESET}"
+    summary = f"{SUMMARY_COLOR_NOT_CLEAN}{n_repos} git repositories found {COLOR_RESET}"
 
     sss = []
     if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:

@@ -1,7 +1,7 @@
 from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
-from src.git_inspector import get_merged_report
+from git_inspector.reports import get_merged_report
 from tests.testutils import create_repo, add_n_commits, add_merged_branch
 
 

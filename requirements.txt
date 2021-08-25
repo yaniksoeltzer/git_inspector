@@ -1,4 +1,0 @@
-gitpython
-pytest
-pytest-cov
-termcolor
