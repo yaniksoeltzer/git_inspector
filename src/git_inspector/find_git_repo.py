@@ -2,7 +2,7 @@ import os
 from .config import EXCLUDED_DIRS
 
 
-def find_git_repositories(search_paths, excluded_dirs=EXCLUDED_DIRS):
+def find_git_directories(search_paths, excluded_dirs=EXCLUDED_DIRS):
     for search_path in search_paths:
         if any([search_path.startswith(e) for e in excluded_dirs]):
             continue

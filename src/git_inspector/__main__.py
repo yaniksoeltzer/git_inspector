@@ -6,7 +6,7 @@ from typing import List
 
 from git import Repo
 
-from .find_git_repo import find_git_repositories
+from .find_git_repo import find_git_directories
 from .report_formatter import format_git_reports
 from .reports import GIT_REPORT_LEVEL_ALERT, GIT_REPORT_LEVEL_WARNING, get_reports
 
@@ -18,7 +18,7 @@ args = vars(parser.parse_args())
 absolute_paths = [os.path.abspath(x) for x in args['paths']]
 
 
-repo_file_names = find_git_repositories(search_paths=absolute_paths)
+repo_file_names = find_git_directories(search_paths=absolute_paths)
 repos = list(map(Repo, repo_file_names))
 reports = get_reports(repos)
 output = format_git_reports(reports, repos)

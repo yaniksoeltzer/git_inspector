@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
 
-from git_inspector.find_git_repo import find_git_repositories
+from git_inspector.find_git_repo import find_git_directories
 
 
 # Directories
@@ -67,7 +67,7 @@ def test_setup():
 
 def test_exclude_test_dir(test_setup):
     test_directory, paths = test_setup
-    repo_paths = find_git_repositories(
+    repo_paths = find_git_directories(
         search_paths=[test_directory],
         excluded_dirs=[test_directory]
     )
@@ -77,7 +77,7 @@ def test_exclude_test_dir(test_setup):
 
 def test_exclude_root_dir(test_setup):
     test_directory, paths = test_setup
-    repo_paths = find_git_repositories(
+    repo_paths = find_git_directories(
         search_paths=[test_directory],
         excluded_dirs=["/"]
     )
@@ -87,7 +87,7 @@ def test_exclude_root_dir(test_setup):
 
 def test_exclude_git_repo(test_setup):
     test_directory, paths = test_setup
-    repo_paths = find_git_repositories(
+    repo_paths = find_git_directories(
         search_paths=[test_directory],
         excluded_dirs=[paths["repo-a"]]
     )
@@ -98,7 +98,7 @@ def test_exclude_git_repo(test_setup):
 
 def test_absolute_directory(test_setup):
     test_directory, paths = test_setup
-    repo_paths = find_git_repositories(
+    repo_paths = find_git_directories(
         search_paths=[test_directory],
         excluded_dirs=[paths["middle_1"]]
     )
@@ -109,7 +109,7 @@ def test_absolute_directory(test_setup):
 
 def test_exclude_directory_name(test_setup):
     test_directory, paths = test_setup
-    repo_paths = find_git_repositories(
+    repo_paths = find_git_directories(
         search_paths=[test_directory],
         excluded_dirs=["middle_1"]
     )
