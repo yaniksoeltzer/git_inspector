@@ -1,7 +1,7 @@
 import sys
 
 
-class ActiveTerminalText:
+class DynamicTerminalOutput:
     def __init__(self, start_output):
         self.last_output = start_output
         print(start_output)

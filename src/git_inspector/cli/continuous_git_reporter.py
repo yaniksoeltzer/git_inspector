@@ -1,5 +1,5 @@
-from .active_terminal_text import ActiveTerminalText
-from ..report_formatter import format_git_reports
+from .dynamic_terminal_output import DynamicTerminalOutput
+from .report_formatter import format_git_reports
 
 
 class ContinuousGitReporter:
@@ -7,7 +7,7 @@ class ContinuousGitReporter:
     n_repos = 0
 
     def __init__(self):
-        terminal = ActiveTerminalText("searching . . .")
+        terminal = DynamicTerminalOutput("searching . . .")
         self.terminal = terminal
 
     def add_repo(self, _):

@@ -2,16 +2,16 @@ from collections import Counter
 from typing import List, Iterator
 from git import Head
 from termcolor import colored
-from .reports import *
-from .config import *
-from .common import is_master_branch
+from ..reports import *
+from ..config import *
+from ..common import is_master_branch
 
 
 INTENTS = 4
 REPORT_TYPE_COLOR = {
     GIT_REPORT_LEVEL_ALERT: "red",
     GIT_REPORT_LEVEL_WARNING: "yellow",
-    GIT_REPORT_LEVEL_HINT: "grey",
+    GIT_REPORT_LEVEL_HINT: None,
 }
 
 BRANCH_COLOR = "blue"
