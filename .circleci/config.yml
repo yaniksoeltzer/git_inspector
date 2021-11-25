@@ -5,8 +5,9 @@ orbs:
 
 jobs:
   build-and-test:
-    executor: python/default
-    tag: "3.9"
+    executor:
+      name: python/default
+      tag: "3.9"
     steps:
       - checkout
       - run:
