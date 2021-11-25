@@ -45,7 +45,7 @@ git clone git@github.com:yaniksoeltzer/git_inspector.git
 ##### 2. Run the `install.sh` script
 ```
 cd git_inspector
-./install.sh
+python -m pip install .
 ```
 ##### 3. Test if `git_inspector` is installed
 ```
