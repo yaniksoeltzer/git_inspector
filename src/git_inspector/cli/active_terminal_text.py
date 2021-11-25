@@ -11,6 +11,9 @@ class ActiveTerminalText:
         print(new_output)
         self.last_output = new_output
 
+    def clear(self):
+        self.update("")
+
     def _clear_previous(self):
         n_new_lines = self.last_output.count("\n") + 1
         for _ in range(n_new_lines):
