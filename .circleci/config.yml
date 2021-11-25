@@ -6,13 +6,14 @@ orbs:
 jobs:
   build-and-test:
     executor: python/default
+    tag: "3.9"
     steps:
       - checkout
       - run:
           command: |
             python -m pip install .
             python -m pip install tox
-            python -m tox
+            python -m tox --skip-missing-interpreters
           name: Test
 
 workflows:
