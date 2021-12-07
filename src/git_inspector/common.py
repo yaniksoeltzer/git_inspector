@@ -2,6 +2,10 @@ from git import Commit
 import logging
 
 
+class CommitResolveError(Exception):
+    pass
+
+
 def get_tracked_heads(repo):
     return list(filter(
         lambda head: head.tracking_branch() is not None,
@@ -49,9 +53,13 @@ def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept
         new_fringe.extend(f_parents)
     new_fringe = [x for x in new_fringe if x not in visited]
     visited += fringe
-    dept = depth_search_commit(new_fringe, visited, goal_node, cur_dept+1)
+    try:
+        dept = depth_search_commit(new_fringe, visited, goal_node, cur_dept + 1)
+    except ValueError as e:
+        # A value error like the following is risen if the remote can not be resolved any further
+        # ValueError: SHA b'7692881d2a61a4ba47eeef5d7827c0d2cb896def' could not be resolved, git returned:
+        # b'7692881d2a61a4ba47eeef5d7827c0d2cb896def missing
+        raise CommitResolveError(e)
     if dept is not None:
         return dept + 1
     return None
-
-
