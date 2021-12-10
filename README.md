@@ -33,12 +33,9 @@ optional arguments:
 ## Installation
 ##### 1. Clone the repository to any location 
 ```
-# https:
-git clone https://github.com/yaniksoeltzer/git_inspector.git
-# ssh:  
 git clone git@github.com:yaniksoeltzer/git_inspector.git
 ``` 
-##### 2. Run the `install.sh` script
+##### 2. Install Python Package
 ```
 cd git_inspector
 python -m pip install .
