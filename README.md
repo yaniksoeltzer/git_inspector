@@ -57,5 +57,5 @@ optional arguments:
 ## Uninstall Git-Inspector
 To uninstall `git_inspector` run 
 ```
-./un_install.sh
+> python -m pip uninstall git_inspector
 ```
