@@ -1,6 +1,6 @@
 from collections import Counter
 from typing import List, Iterator
-from git import Head
+from git import Head, Repo
 from termcolor import colored
 from ..reports import *
 from ..config import *

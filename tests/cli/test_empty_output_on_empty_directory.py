@@ -21,4 +21,3 @@ def mock_terminal():
 def test_empty_output_on_empty_reports(mock_terminal):
     reporter = ContinuousGitReporter()
     reporter.terminal = mock_terminal
-    reporter.finish()

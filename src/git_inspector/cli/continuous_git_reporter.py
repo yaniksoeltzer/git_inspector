@@ -1,7 +1,7 @@
 import logging
 
 from .dynamic_terminal_output import DynamicTerminalOutput
-from .report_formatter import format_git_reports
+from ..formatter.report_type_oriented_report_formatter import format_git_reports
 from ..exceptions import FailedToGenerateReport
 
 
@@ -14,6 +14,9 @@ class ContinuousGitReporter:
         terminal = DynamicTerminalOutput("searching . . .")
         self.terminal = terminal
 
+    def __enter__(self):
+        return self
+
     def add_repo(self, _):
         self.n_repos += 1
         self.update_view()
@@ -25,7 +28,7 @@ class ContinuousGitReporter:
     def add_error(self, error: FailedToGenerateReport):
         self.errors.append(error)
 
-    def finish(self):
+    def __exit__(self, type, value, traceback):
         self.update_view()
         # print errors when finished to not disturb terminal output
         logging.error(generate_error_message(self.errors))

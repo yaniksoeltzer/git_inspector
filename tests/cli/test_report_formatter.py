@@ -1,8 +1,8 @@
 from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
-from git_inspector.cli.report_formatter import format_git_reports
-from git_inspector.reports import ReportType, GIT_REPORT_LEVEL_ALERT, Report, get_reports
+from git_inspector.formatter.report_type_oriented_report_formatter import format_git_reports
+from git_inspector.reports import ReportType, GIT_REPORT_LEVEL_ALERT, Report, REPORTS, get_dirty_report
 from tests.testutils import create_repo
 
 
@@ -29,12 +29,17 @@ def test_output_contains_working_directory():
 
 
 def test_clean_repo_output(repo: Repo):
-    reports = get_reports(repo)
+    reports = []
+    for f, report_type in REPORTS:
+        report = f(repo)
+        if report is not None:
+            reports.append(report)
     output = format_git_reports(reports, 10)
     assert repo.working_dir in output
 
 
 def test_dirty_repo_output(dirty_repo: Repo):
-    reports = get_reports(dirty_repo)
-    output = format_git_reports(reports, 10)
+    report = get_dirty_report(dirty_repo)
+    assert report is not None
+    output = format_git_reports([report], 10)
     assert dirty_repo.working_dir in output

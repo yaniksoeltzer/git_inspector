@@ -1,5 +1,13 @@
 import os
+from git import Repo
+
 from .config import EXCLUDED_DIRS
+
+
+def find_repos(search_paths):
+    git_path_generator = find_git_directories(search_paths=search_paths)
+    git_repo_generator = map(Repo, git_path_generator)
+    return git_repo_generator
 
 
 def find_git_directories(search_paths, excluded_dirs=EXCLUDED_DIRS):
