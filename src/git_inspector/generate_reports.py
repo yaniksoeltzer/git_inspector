@@ -3,6 +3,7 @@ from collections import Counter
 from typing import List
 from git import Repo
 
+from .exceptions import FailedToGenerateReport
 from .find_git_repo import find_git_directories
 from .reports import GIT_REPORT_LEVEL_ALERT, get_reports, GIT_REPORT_LEVEL_WARNING
 
@@ -14,7 +15,11 @@ def generate_reports(absolute_paths: List[str], reporter):
     all_reports = []
     for repo in git_repo_generator:
         reporter.add_repo(repo)
-        reports = get_reports(repo)
+        try:
+            reports = list(get_reports(repo))
+        except FailedToGenerateReport as e:
+            reporter.add_error(e)
+            continue
         for report in reports:
             reporter.add_report(report)
             all_reports.append(report)
