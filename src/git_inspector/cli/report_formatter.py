@@ -35,7 +35,7 @@ def format_git_reports(git_reports: Iterator[Report], n_repos: int):
                     output.append(" " * INTENTS + working_dir + colored(" @" + branch, BRANCH_COLOR))
 
     output.append(summary_string(git_reports, n_repos))
-    return "\n".join(output)
+    return "\n".join(output) + colored("", None)
 
 
 def summary_string(git_reports: list, n_repos: int):
