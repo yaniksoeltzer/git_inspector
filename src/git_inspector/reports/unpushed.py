@@ -1,5 +1,5 @@
 from git import Repo, RemoteReference
-from ..common import is_ancestors_of, CommitResolveError
+from ..common import is_ancestors_of, CommitResolveError, remote_is_gone
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
 
 unpushed_report = ReportType(
@@ -21,10 +21,12 @@ def get_unpushed_report(repo):
 def get_unpushed_branches(repo: Repo):
     unpushed_heads = []
     for head in repo.heads:
-        remote: RemoteReference = head.tracking_branch()
-        if remote is None:
+        remote_ref: RemoteReference = head.tracking_branch()
+        if remote_ref is None:
             continue
-        remote_commit = remote.commit
+        if not remote_ref.is_valid():
+            continue
+        remote_commit = remote_ref.commit
         local_commit = head.commit
         if remote_commit == local_commit:
             continue
