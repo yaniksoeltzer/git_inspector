@@ -16,10 +16,9 @@ if __name__ == '__main__':
         Report("~/repo_with_old_branch", ["old_branch"], merged_report),
         Report("~/repo_w_local_only_branch", ["local_only"], untracked_report),
     ]
-    reporter = ContinuousGitReporter()
-    for report in reports:
-        sleep(0.5)
-        reporter.add_repo(None)
-        reporter.add_report(report)
+    with ContinuousGitReporter() as reporter:
+        for report in reports:
+            sleep(0.5)
+            reporter.add_repo(None)
+            reporter.add_report(report)
     sleep(3)
-    reporter.finish()
