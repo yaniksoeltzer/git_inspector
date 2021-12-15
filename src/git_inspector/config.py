@@ -1,9 +1,10 @@
 
-EXCLUDED_DIRS = [
+EXCLUDED_DIR_SELECTORS = [
     "Trash",
     "/proc",
     ".cache",
     "node_modules",
+    "~/.cargo"
 ]
 
 
