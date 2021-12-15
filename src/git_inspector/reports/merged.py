@@ -14,7 +14,7 @@ def get_merged_report(repo):
     if len(merged_heads) == 0:
         return None
     else:
-        return Report(repo.working_dir, branch_names, merged_report)
+        return Report(repo.working_dir, branch_names, None, merged_report)
 
 
 def get_merged_heads(repo):

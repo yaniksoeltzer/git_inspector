@@ -1,6 +1,6 @@
 from collections import Counter
 from typing import List, Iterator
-from git import Head, Repo
+from git import Head, Repo, Remote
 from termcolor import colored
 from ..reports import *
 from ..config import *
@@ -15,6 +15,7 @@ REPORT_TYPE_COLOR = {
 }
 
 BRANCH_COLOR = "blue"
+REMOTE_COLOR = "magenta"
 
 
 def format_git_reports(git_reports: Iterator[Report], n_repos: int):
@@ -28,11 +29,14 @@ def format_git_reports(git_reports: Iterator[Report], n_repos: int):
         reports = [r for r in git_reports if r.report_type == report_type]
         for report in reports:
             working_dir = report.repo
-            if report.branches is None:
-                output.append(" " * INTENTS + working_dir)
-            else:
+            if report.branches is not None:
                 for branch in report.branches:
                     output.append(" " * INTENTS + working_dir + colored(" @" + branch, BRANCH_COLOR))
+            if report.remotes is not None:
+                for remote in report.remotes:
+                    output.append(" " * INTENTS + working_dir + colored(" #" + remote, REMOTE_COLOR))
+            if report.branches is None and report.remotes is None:
+                output.append(" " * INTENTS + working_dir)
 
     output.append(summary_string(git_reports, n_repos))
     return "\n".join(output) + colored("", None)
@@ -67,11 +71,3 @@ def summary_string(git_reports: list, n_repos: int):
         summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}{SUMMARY_COLOR_NOT_CLEAN}, {sss[1]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[2]}{SUMMARY_COLOR_NOT_CLEAN}."
 
     return summary
-
-
-def git_repo_repr(repo: Repo):
-    return f"{repo.working_tree_dir}"
-
-
-def git_head_repr(head: Head):
-    return f"{head.repo.working_tree_dir}  {f'{COLOR_BRANCH_TAG}@{head}{COLOR_RESET}' if not is_master_branch(head) else ''}"

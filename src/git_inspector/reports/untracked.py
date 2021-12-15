@@ -14,7 +14,7 @@ def get_untracked_report(repo):
     untracked_branches = get_untracked_branches(repo)
     branch_names = [h.name for h in untracked_branches]
     if len(untracked_branches) > 0:
-        return Report(repo.working_dir, branch_names, untracked_report)
+        return Report(repo.working_dir, branch_names, None, untracked_report)
     else:
         return None
 

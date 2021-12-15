@@ -22,7 +22,7 @@ def repo():
 def test_output_contains_working_directory():
     working_dir = "my_custom_directory"
     reports = [
-        Report(working_dir, None, example_report)
+        Report(working_dir, None, None, example_report)
     ]
     output = format_git_reports(reports, 10)
     assert working_dir in output

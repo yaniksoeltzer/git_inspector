@@ -13,7 +13,7 @@ def get_unpushed_report(repo):
     unpushed_branches = get_unpushed_branches(repo)
     branch_names = [h.name for h in unpushed_branches]
     if len(unpushed_branches) > 0:
-        return Report(repo.working_dir, branch_names, unpushed_report)
+        return Report(repo.working_dir, branch_names, None, unpushed_report)
     else:
         return None
 

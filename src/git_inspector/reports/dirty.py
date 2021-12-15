@@ -13,6 +13,6 @@ dirty_report = ReportType(
 
 def get_dirty_report(repo: Repo):
     if repo.is_dirty():
-        return Report(repo.working_dir, None, dirty_report)
+        return Report(repo.working_dir, None, None, dirty_report)
     else:
         return None
