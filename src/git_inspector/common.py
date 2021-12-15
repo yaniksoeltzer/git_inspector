@@ -1,4 +1,6 @@
-from git import Commit
+import os
+
+from git import Commit, Remote
 import logging
 
 
@@ -63,3 +65,15 @@ def depth_search_commit(fringe: iter, visited: list, goal_node: Commit, cur_dept
     if dept is not None:
         return dept + 1
     return None
+
+
+def remote_is_gone(remote: Remote):
+    for url in remote.urls:
+        if url.startswith("file://"):
+            if not os.path.exists(url):
+                return True
+        elif url.startswith("/"):
+            if not os.path.exists(url):
+                return True
+    return False
+
