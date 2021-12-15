@@ -31,7 +31,8 @@ class ContinuousGitReporter:
     def __exit__(self, type, value, traceback):
         self.update_view()
         # print errors when finished to not disturb terminal output
-        logging.error(generate_error_message(self.errors))
+        if len(self.errors) > 0:
+            logging.error(generate_error_message(self.errors))
 
     def update_view(self):
         output = format_git_reports(self.all_reports, self.n_repos)
