@@ -49,3 +49,10 @@ def add_tracked_branch(local_repo, remote_repo, prefix: str):
 def add_merged_branch(repo: Repo):
     repo.create_head('merged_branch', 'HEAD~1')
 
+
+def add_ahead_branch(repo: Repo, name='ahead_branch'):
+    repo.index.commit("test")
+    repo.create_head(name, 'HEAD')
+    repo.active_branch.commit = repo.commit('HEAD~1')
+    assert repo.active_branch.commit == repo.heads[name].commit.parents[0]
+    return repo.heads[name]
