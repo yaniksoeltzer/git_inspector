@@ -7,6 +7,8 @@ from git import Repo
 def create_repo(repo_directory) -> Repo:
     repo = Repo.init(repo_directory)
     repo.index.commit("initial commit")
+    repo.index.commit("second commit")
+    repo.index.commit("third commit")
     return repo
 
 

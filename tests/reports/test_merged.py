@@ -8,7 +8,7 @@ def test_return_none_on_clean_repo(repo: Repo):
     assert report is None
 
 
-def test_return_something_on_merged_branch_repo(ten_commits_repo: Repo):
-    add_merged_branch(ten_commits_repo)
-    report = get_merged_report(ten_commits_repo)
+def test_return_something_on_merged_branch_repo(repo: Repo):
+    add_merged_branch(repo)
+    report = get_merged_report(repo)
     assert report is not None
