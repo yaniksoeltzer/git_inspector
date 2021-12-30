@@ -69,7 +69,7 @@ def test_exclude_test_dir(test_setup):
     test_directory, paths = test_setup
     repo_paths = find_git_directories(
         search_paths=[test_directory],
-        excluded_dirs=[test_directory]
+        excluded_dir_selectors=[test_directory]
     )
     repo_paths = [r for r in repo_paths]
     assert len(repo_paths) == 0
@@ -79,7 +79,7 @@ def test_exclude_root_dir(test_setup):
     test_directory, paths = test_setup
     repo_paths = find_git_directories(
         search_paths=[test_directory],
-        excluded_dirs=["/"]
+        excluded_dir_selectors=["/"]
     )
     repo_paths = [r for r in repo_paths]
     assert len(repo_paths) == 0
@@ -89,7 +89,7 @@ def test_exclude_git_repo(test_setup):
     test_directory, paths = test_setup
     repo_paths = find_git_directories(
         search_paths=[test_directory],
-        excluded_dirs=[paths["repo-a"]]
+        excluded_dir_selectors=[paths["repo-a"]]
     )
     repo_paths = [r for r in repo_paths]
     assert paths["repo-a"] not in repo_paths
@@ -100,7 +100,7 @@ def test_absolute_directory(test_setup):
     test_directory, paths = test_setup
     repo_paths = find_git_directories(
         search_paths=[test_directory],
-        excluded_dirs=[paths["middle_1"]]
+        excluded_dir_selectors=[paths["middle_1"]]
     )
     repo_paths = [r for r in repo_paths]
     assert paths["repo-a"] not in repo_paths
@@ -111,7 +111,7 @@ def test_exclude_directory_name(test_setup):
     test_directory, paths = test_setup
     repo_paths = find_git_directories(
         search_paths=[test_directory],
-        excluded_dirs=["middle_1"]
+        excluded_dir_selectors=["middle_1"]
     )
     repo_paths = [r for r in repo_paths]
     assert paths["repo-a"] not in repo_paths
