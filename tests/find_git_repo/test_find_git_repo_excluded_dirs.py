@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
 
-from git_inspector.find_git_repo import find_git_directories
+from git_inspector.find_git_repo import find_git_directories, is_absolute_excluded
 
 
 # Directories
@@ -73,6 +73,10 @@ def test_exclude_test_dir(test_setup):
     )
     repo_paths = [r for r in repo_paths]
     assert len(repo_paths) == 0
+
+
+def test_is_absolute_excluded_root_dir():
+    assert is_absolute_excluded("/tmp/test", ["/"])
 
 
 def test_exclude_root_dir(test_setup):
