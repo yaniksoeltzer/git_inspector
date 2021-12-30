@@ -23,9 +23,8 @@ def get_merged_heads(repo):
     if master:
         non_masters = get_non_master_branches(repo)
         for non_master in non_masters:
-            depth = is_ancestors_of(ancestor=non_master.commit, commit=master.commit)
-            if depth is None:
-                pass
-            else:  # depth >= 0:
+            if is_ancestors_of(
+                    ancestor=non_master.commit,
+                    commit=master.commit):
                 merged_heads.append(non_master)
     return merged_heads
