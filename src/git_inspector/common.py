@@ -23,7 +23,7 @@ def get_untracked_heads(repo):
 
 
 def is_master_branch(head):
-    return head.name == 'master'
+    return head.name == 'master' or head.name == 'main'
 
 
 def get_master_branch(repo):
