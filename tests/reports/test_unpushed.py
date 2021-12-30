@@ -48,7 +48,7 @@ def test_outdated_branches(remote_repo, cloned_repo):
     remote_repo.index.commit("remote only commit")
     origin.fetch()
 
-    local = cloned_repo.heads.master
+    local = cloned_repo.heads[0]
     remote = local.tracking_branch()
     assert local.commit != remote.commit
 
