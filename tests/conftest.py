@@ -28,3 +28,11 @@ def cloned_repo(remote_repo: Repo):
             repo_directory=directory,
             remote_repo=remote_repo
         )
+
+
+@pytest.fixture
+def ten_commits_repo():
+    with TemporaryDirectory() as directory:
+        repo = create_repo(directory)
+        add_n_commits(repo, 10)
+        yield repo
