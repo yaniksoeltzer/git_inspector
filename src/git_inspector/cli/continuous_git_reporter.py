@@ -36,7 +36,7 @@ class ContinuousGitReporter:
             logging.error(generate_error_message(self.errors))
 
     def update_view(self):
-        output = format_git_reports(self.all_reports, self.n_repos)
+        output = format_git_reports(self.all_reports, self.n_repos, self.report_level)
         self.terminal.update(output)
 
 
