@@ -1,4 +1,5 @@
 import pytest
+from git_inspector.reports import GIT_REPORT_LEVEL_HINT
 
 from src.git_inspector.cli.continuous_git_reporter import ContinuousGitReporter
 
@@ -19,5 +20,5 @@ def mock_terminal():
 
 
 def test_empty_output_on_empty_reports(mock_terminal):
-    reporter = ContinuousGitReporter()
+    reporter = ContinuousGitReporter(report_level=GIT_REPORT_LEVEL_HINT)
     reporter.terminal = mock_terminal

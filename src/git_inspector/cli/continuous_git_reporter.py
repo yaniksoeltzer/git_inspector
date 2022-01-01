@@ -10,9 +10,10 @@ class ContinuousGitReporter:
     n_repos = 0
     errors = []
 
-    def __init__(self):
+    def __init__(self, report_level):
         terminal = DynamicTerminalOutput("searching . . .")
         self.terminal = terminal
+        self.report_level = report_level
 
     def __enter__(self):
         return self

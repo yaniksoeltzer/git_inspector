@@ -2,14 +2,13 @@
 import traceback
 
 from .exceptions import FailedToGenerateReport
-from .reports import REPORTS
 
 
-def inspect_repos(git_repos, reporter):
+def inspect_repos(git_repos, reporter, reports):
     all_reports = []
     for repo in git_repos:
         reporter.add_repo(repo)
-        for get_report, report_type in REPORTS:
+        for get_report, report_type in reports:
             try:
                 report = get_report(repo)
                 if report is not None:

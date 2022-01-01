@@ -15,9 +15,10 @@ BRANCH_COLOR = "blue"
 REMOTE_COLOR = "magenta"
 
 
-def format_git_reports(git_reports: Iterator[Report], n_repos: int):
+def format_git_reports(git_reports: Iterator[Report], n_repos: int, report_level=100):
     git_reports = [g for g in git_reports]
-    output = git_report_list_format(git_reports)
+    output = git_report_list_format([r for r in git_reports
+                                     if r.report_type.alert_level <= report_level])
     if output != "":
         output += "\n"
     output += summary_string(git_reports, n_repos)
