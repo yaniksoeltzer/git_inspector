@@ -1,11 +1,8 @@
 from collections import Counter
 from typing import List, Iterator
-from git import Head, Repo, Remote
 from termcolor import colored
 from ..reports import *
 from ..config import *
-from ..common import is_master_branch
-
 
 INTENTS = 4
 REPORT_TYPE_COLOR = {
@@ -20,6 +17,14 @@ REMOTE_COLOR = "magenta"
 
 def format_git_reports(git_reports: Iterator[Report], n_repos: int):
     git_reports = [g for g in git_reports]
+    output = git_report_list_format(git_reports)
+    if output != "":
+        output += "\n"
+    output += summary_string(git_reports, n_repos)
+    return output
+
+
+def git_report_list_format(git_reports: Iterator[Report]):
     report_types: List[ReportType] = list(set(r.report_type for r in git_reports))
     report_types = sorted(report_types, key=lambda rt: rt.alert_level)
     output = []
@@ -37,9 +42,7 @@ def format_git_reports(git_reports: Iterator[Report], n_repos: int):
                     output.append(" " * INTENTS + working_dir + colored(" #" + remote, REMOTE_COLOR))
             if report.branches is None and report.remotes is None:
                 output.append(" " * INTENTS + working_dir)
-
-    output.append(summary_string(git_reports, n_repos))
-    return "\n".join(output) + colored("", None)
+    return "\n".join(output)
 
 
 def summary_string(git_reports: list, n_repos: int):
@@ -70,4 +73,4 @@ def summary_string(git_reports: list, n_repos: int):
     if len(sss) == 3:
         summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}{SUMMARY_COLOR_NOT_CLEAN}, {sss[1]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[2]}{SUMMARY_COLOR_NOT_CLEAN}."
 
-    return summary
+    return summary + colored("", None)

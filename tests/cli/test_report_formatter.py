@@ -43,3 +43,8 @@ def test_dirty_repo_output(dirty_repo: Repo):
     assert report is not None
     output = format_git_reports([report], 10)
     assert dirty_repo.working_dir in output
+
+
+def test_no_report():
+    output = format_git_reports([], 10)
+    assert len(output.splitlines()) == 1
