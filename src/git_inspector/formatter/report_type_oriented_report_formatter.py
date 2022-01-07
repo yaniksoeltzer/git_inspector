@@ -35,14 +35,14 @@ def git_report_list_format(git_reports: Iterator[Report]):
         reports = [r for r in git_reports if r.report_type == report_type]
         for report in reports:
             working_dir = report.repo
-            if report.branches is not None:
-                for branch in report.branches:
-                    output.append(" " * INTENTS + working_dir + colored(" @" + branch, BRANCH_COLOR))
-            if report.remotes is not None:
-                for remote in report.remotes:
-                    output.append(" " * INTENTS + working_dir + colored(" #" + remote, REMOTE_COLOR))
-            if report.branches is None and report.remotes is None:
-                output.append(" " * INTENTS + working_dir)
+            report_string = " " * INTENTS + working_dir
+            if 'branch' in report.additional_info:
+                branch = report.additional_info['branch']
+                report_string += colored(" @" + branch, BRANCH_COLOR)
+            if 'remote' in report.additional_info:
+                remote = report.additional_info['remote']
+                report_string += colored(" @" + remote, REMOTE_COLOR)
+            output.append(report_string)
     return "\n".join(output)
 
 

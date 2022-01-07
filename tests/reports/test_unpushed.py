@@ -1,17 +1,17 @@
 from git import Repo
-from git_inspector.reports.unpushed import get_unpushed_report
+from git_inspector.reports.unpushed import get_unpushed_reports
 from tests.testutils import add_tracked_branch
 
 
 def test_return_none_on_local_repo(repo: Repo):
-    report = get_unpushed_report(repo)
-    assert report is None
+    reports = get_unpushed_reports(repo)
+    assert len(reports) == 0
 
 
 def test_return_something_on_unpushed_repo(cloned_repo):
     cloned_repo.index.commit("local-only-commit")
-    report = get_unpushed_report(cloned_repo)
-    assert report is not None
+    reports = get_unpushed_reports(cloned_repo)
+    assert len(reports) > 0
 
 
 def test_multiple_up_to_date_branches(remote_repo, cloned_repo):
@@ -22,8 +22,8 @@ def test_multiple_up_to_date_branches(remote_repo, cloned_repo):
             remote_repo=remote_repo,
             prefix=f"{i}"
         )
-    report = get_unpushed_report(cloned_repo)
-    assert report is None
+    reports = get_unpushed_reports(cloned_repo)
+    assert len(reports) == 0
 
 
 def test_multiple_branches(remote_repo, cloned_repo):
@@ -36,10 +36,9 @@ def test_multiple_branches(remote_repo, cloned_repo):
         )
         lb.checkout()
         cloned_repo.index.commit(f"local only commit on {lb}")
-    report = get_unpushed_report(cloned_repo)
-    assert report is not None
-    assert report.branches is not None
-    assert len(report.branches) == n_branches
+    reports = get_unpushed_reports(cloned_repo)
+    assert len(reports) == n_branches
+    assert reports[0].additional_info['branch'] is not None
 
 
 def test_outdated_branches(remote_repo, cloned_repo):
@@ -52,6 +51,5 @@ def test_outdated_branches(remote_repo, cloned_repo):
     remote = local.tracking_branch()
     assert local.commit != remote.commit
 
-    report = get_unpushed_report(cloned_repo)
-
-    assert report is None
+    reports = get_unpushed_reports(cloned_repo)
+    assert len(reports) == 0

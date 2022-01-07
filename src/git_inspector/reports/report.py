@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-Report = namedtuple('report', ['repo', 'branches', 'remotes', 'report_type'])
+Report = namedtuple('report', ['repo', 'additional_info', 'report_type'])
 
 
 class ReportType:

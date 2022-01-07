@@ -1,3 +1,5 @@
+from typing import List
+
 from git import Repo, RemoteReference
 from ..common import is_ancestors_of, CommitResolveError, remote_is_gone
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
@@ -9,13 +11,19 @@ unpushed_report = ReportType(
 )
 
 
-def get_unpushed_report(repo):
+def get_unpushed_reports(repo: Repo) -> List[Report]:
     unpushed_branches = get_unpushed_branches(repo)
-    branch_names = [h.name for h in unpushed_branches]
-    if len(unpushed_branches) > 0:
-        return Report(repo.working_dir, branch_names, None, unpushed_report)
-    else:
-        return None
+    reports = [
+        Report(
+            repo=repo.working_dir,
+            additional_info={
+                'branch': unpushed_branch.name
+            },
+            report_type=unpushed_report,
+        )
+        for unpushed_branch in unpushed_branches
+    ]
+    return reports
 
 
 def get_unpushed_branches(repo: Repo):

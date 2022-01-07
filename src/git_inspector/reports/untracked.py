@@ -1,3 +1,5 @@
+from typing import List
+
 from git import Repo
 
 from .merged import get_merged_heads
@@ -12,17 +14,23 @@ untracked_report = ReportType(
 )
 
 
-def get_untracked_report(repo):
+def get_untracked_reports(repo: Repo) -> List[Report]:
     untracked_branches = get_untracked_branches(repo)
     merged_branches = get_merged_heads(repo)
     untracked_branches = [
         b for b in untracked_branches if b not in merged_branches
     ]
-    branch_names = [h.name for h in untracked_branches]
-    if len(branch_names) > 0:
-        return Report(repo.working_dir, branch_names, None, untracked_report)
-    else:
-        return None
+    reports = [
+        Report(
+            repo=repo.working_dir,
+            additional_info={
+                'branch': untracked_branch.name
+            },
+            report_type=untracked_report,
+        )
+        for untracked_branch in untracked_branches
+    ]
+    return reports
 
 
 def get_untracked_branches(repo: Repo):

@@ -1,3 +1,7 @@
+from typing import List
+
+from git import Repo
+
 from ..common import get_master_branch, get_non_master_branches, is_ancestors_of
 from .report import ReportType, Report, GIT_REPORT_LEVEL_HINT
 
@@ -8,13 +12,19 @@ merged_report = ReportType(
 )
 
 
-def get_merged_report(repo):
+def get_merged_reports(repo: Repo) -> List[Report]:
     merged_heads = get_merged_heads(repo)
-    branch_names = [h.name for h in merged_heads]
-    if len(merged_heads) == 0:
-        return None
-    else:
-        return Report(repo.working_dir, branch_names, None, merged_report)
+    reports = [
+        Report(
+            repo=repo.working_dir,
+            additional_info={
+                'branch': merged_head.name
+            },
+            report_type=merged_report,
+        )
+        for merged_head in merged_heads
+    ]
+    return reports
 
 
 def get_merged_heads(repo):

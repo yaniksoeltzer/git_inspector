@@ -1,3 +1,4 @@
+from typing import List
 from git import Repo
 
 from .report import ReportType, Report, GIT_REPORT_LEVEL_WARNING
@@ -10,15 +11,19 @@ broken_remote_report = ReportType(
 )
 
 
-def get_remote_branch_is_gone_report(repo: Repo):
-    gone_remotes = []
+def get_remote_branch_is_gone_reports(repo: Repo) -> List[Report]:
+    reports = []
     for remote in repo.remotes:
         if remote_is_gone(remote):
-            gone_remotes.append(remote.name)
-    if len(gone_remotes) > 0:
-        return Report(repo.working_dir, None, gone_remotes, broken_remote_report)
-    else:
-        return None
+            report = Report(
+                repo=repo.working_dir,
+                additional_info={
+                    'remote': remote.name
+                },
+                report_type=broken_remote_report
+            )
+            reports.append(report)
+    return reports
 
 
 def get_tracked_branches(repo: Repo):

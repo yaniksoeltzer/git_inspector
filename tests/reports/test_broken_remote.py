@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 
 import pytest
 from git import Repo
-from git_inspector.reports.broken_remote import get_remote_branch_is_gone_report
+from git_inspector.reports.broken_remote import get_remote_branch_is_gone_reports
 
 from tests.testutils import create_cloned_repo, create_repo
 
@@ -24,17 +24,16 @@ def master_gone_repo(remote_repo: Repo):
 
 
 def test_return_none_on_clean_repo(repo: Repo):
-    report = get_remote_branch_is_gone_report(repo)
-    assert report is None
+    reports = get_remote_branch_is_gone_reports(repo)
+    assert len(reports) == 0
 
 
 def test_return_something_on_broken_remote(master_gone_repo: Repo):
-    report = get_remote_branch_is_gone_report(master_gone_repo)
-    assert report is not None
+    reports = get_remote_branch_is_gone_reports(master_gone_repo)
+    assert len(reports) > 0
 
 
 def test_contain_origin_on_broken_remote(master_gone_repo: Repo):
-    report = get_remote_branch_is_gone_report(master_gone_repo)
-    assert len(report.remotes) == 1
-    assert report.remotes[0] == 'origin'
-    assert report is not None
+    reports = get_remote_branch_is_gone_reports(master_gone_repo)
+    assert len(reports) == 1
+    assert reports[0].additional_info['remote'] == 'origin'

@@ -1,5 +1,5 @@
 from git import Repo
-from git_inspector.reports import get_dirty_report
+from git_inspector.reports.dirty import get_dirty_report
 
 
 def test_return_none_on_clean_repo(repo: Repo):
