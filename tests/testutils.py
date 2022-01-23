@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import lorem as lorem
 from git import Repo
 
 
@@ -30,6 +31,16 @@ def make_repo_dirty(repo: Repo):
 
 def add_n_commits(repo: Repo, n_commits):
     for i in range(n_commits):
+        repo.index.commit(f"commit-changed-{i}")
+
+
+def add_n_big_commits(repo: Repo, n_commits):
+    FILENAME = "big_file.txt"
+    for i in range(n_commits):
+        with open(Path(repo.working_dir) / FILENAME , "w") as big_file:
+            for i in range(100):
+                big_file.write(lorem.paragraph())
+        repo.index.add(FILENAME)
         repo.index.commit(f"commit-changed-{i}")
 
 

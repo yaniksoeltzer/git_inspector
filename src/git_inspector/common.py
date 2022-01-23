@@ -1,7 +1,6 @@
 import os
 
-from git import Commit, Remote
-import logging
+from git import Commit, Remote, Repo
 
 
 class CommitResolveError(Exception):
@@ -35,6 +34,11 @@ def get_master_branch(repo):
 
 def get_non_master_branches(repo):
     return list(filter(lambda x: not is_master_branch(x), repo.heads))
+
+
+def is_ahead_of(repo: Repo, ancestor: Commit, commit: Commit):
+    commits_ahead = repo.iter_commits(f'{ancestor}..{commit}')
+    return any(True for _ in commits_ahead)
 
 
 def is_ancestors_of(ancestor: Commit, commit: Commit):
