@@ -1,8 +1,9 @@
 from typing import List
 
 from git import Repo, RemoteReference
-from ..common import is_ancestors_of, CommitResolveError, remote_is_gone
+
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
+from ..common import CommitResolveError, is_ahead_of
 
 unpushed_report = ReportType(
     'unpushed',
@@ -39,7 +40,7 @@ def get_unpushed_branches(repo: Repo):
         if remote_commit == local_commit:
             continue
         try:
-            local_is_ahead_remote = is_ancestors_of(ancestor=remote_commit, commit=local_commit)
+            local_is_ahead_remote = is_ahead_of(repo=repo, ancestor=remote_commit, commit=local_commit)
             if local_is_ahead_remote:
                 unpushed_heads.append(head)
         except CommitResolveError:
