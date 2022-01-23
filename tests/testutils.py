@@ -51,7 +51,7 @@ def add_merged_branch(repo: Repo):
 
 
 def add_ahead_branch(repo: Repo, name='ahead_branch'):
-    repo.index.commit("test")
+    repo.index.commit(f"new_branch_{name}")
     repo.create_head(name, 'HEAD')
     repo.active_branch.commit = repo.commit('HEAD~1')
     assert repo.active_branch.commit == repo.heads[name].commit.parents[0]
