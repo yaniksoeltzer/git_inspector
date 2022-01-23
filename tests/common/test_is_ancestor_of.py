@@ -1,7 +1,7 @@
 from git import Repo
 from git_inspector.common import is_ancestors_of
 
-from tests.testutils import add_ahead_branch
+from tests.testutils import add_ahead_branch, add_n_commits
 
 
 def test_same_commit(repo: Repo):
@@ -28,10 +28,26 @@ def test_distant_ancestor(repo: Repo):
         commit=repo.commit("HEAD"))
 
 
+def test_very_distant_ancestor(repo: Repo):
+    n_commits = 1_000
+    add_n_commits(repo, n_commits)
+    assert is_ancestors_of(
+        ancestor=repo.commit(f"HEAD~{n_commits}"),
+        commit=repo.commit("HEAD"))
+
+
 def test_distant_successor(repo: Repo):
     assert not is_ancestors_of(
         ancestor=repo.commit("HEAD"),
         commit=repo.commit("HEAD~2"))
+
+
+def test_very_distant_successor(repo: Repo):
+    n_commits = 1_000
+    add_n_commits(repo, n_commits)
+    assert not is_ancestors_of(
+        ancestor=repo.commit("HEAD"),
+        commit=repo.commit(f"HEAD~{n_commits}"))
 
 
 def test_ahead_branch(repo: Repo):
