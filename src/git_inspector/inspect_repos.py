@@ -17,5 +17,7 @@ def inspect_repos(git_repos: List[Repo], reporter, reports_functions):
                     reporter.add_report(report)
                 all_reports.extend(reports)
             except Exception as e:
-                error = FailedToGenerateReport(repo, report_type, e, traceback.format_exc())
+                error = FailedToGenerateReport(
+                    repo, report_type, e, traceback.format_exc()
+                )
                 reporter.add_error(error)

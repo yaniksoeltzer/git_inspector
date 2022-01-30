@@ -4,6 +4,17 @@ orbs:
   python: circleci/python@1.5.0
 
 jobs:
+  test-formatting:
+    executor:
+      name: python/default
+      tag: "3.9"
+    steps:
+      - checkout
+      - run:
+          command: |
+            python -m pip install black
+            python -m black --check src tests documentation
+
   build-and-test:
     executor:
       name: python/default
@@ -15,9 +26,9 @@ jobs:
             python -m pip install .
             python -m pip install tox
             python -m tox --skip-missing-interpreters
-          name: Test
 
 workflows:
   main:
     jobs:
+      - test-formatting
       - build-and-test

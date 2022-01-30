@@ -5,11 +5,7 @@ from git import Repo, RemoteReference
 from .report import ReportType, GIT_REPORT_LEVEL_WARNING, Report
 from ..common import CommitResolveError, is_ahead_of
 
-unpushed_report = ReportType(
-    'unpushed',
-    'unpushed branches',
-    GIT_REPORT_LEVEL_WARNING
-)
+unpushed_report = ReportType("unpushed", "unpushed branches", GIT_REPORT_LEVEL_WARNING)
 
 
 def get_unpushed_reports(repo: Repo) -> List[Report]:
@@ -17,9 +13,7 @@ def get_unpushed_reports(repo: Repo) -> List[Report]:
     reports = [
         Report(
             repo=repo.working_dir,
-            additional_info={
-                'branch': unpushed_branch.name
-            },
+            additional_info={"branch": unpushed_branch.name},
             report_type=unpushed_report,
         )
         for unpushed_branch in unpushed_branches
@@ -40,7 +34,9 @@ def get_unpushed_branches(repo: Repo):
         if remote_commit == local_commit:
             continue
         try:
-            local_is_ahead_remote = is_ahead_of(repo=repo, ancestor=remote_commit, commit=local_commit)
+            local_is_ahead_remote = is_ahead_of(
+                repo=repo, ancestor=remote_commit, commit=local_commit
+            )
             if local_is_ahead_remote:
                 unpushed_heads.append(head)
         except CommitResolveError:

@@ -8,21 +8,15 @@ class CommitResolveError(Exception):
 
 
 def get_tracked_heads(repo):
-    return list(filter(
-        lambda head: head.tracking_branch() is not None,
-        repo.heads
-    ))
+    return list(filter(lambda head: head.tracking_branch() is not None, repo.heads))
 
 
 def get_untracked_heads(repo):
-    return list(filter(
-        lambda head: head.tracking_branch() is None,
-        repo.heads
-    ))
+    return list(filter(lambda head: head.tracking_branch() is None, repo.heads))
 
 
 def is_master_branch(head):
-    return head.name == 'master' or head.name == 'main'
+    return head.name == "master" or head.name == "main"
 
 
 def get_master_branch(repo):
@@ -37,7 +31,7 @@ def get_non_master_branches(repo):
 
 
 def is_ahead_of(repo: Repo, ancestor: Commit, commit: Commit):
-    commits_ahead = repo.iter_commits(f'{ancestor}..{commit}')
+    commits_ahead = repo.iter_commits(f"{ancestor}..{commit}")
     return any(True for _ in commits_ahead)
 
 
@@ -71,4 +65,3 @@ def remote_is_gone(remote: Remote):
             if not os.path.exists(url):
                 return True
     return False
-

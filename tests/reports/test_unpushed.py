@@ -18,9 +18,7 @@ def test_multiple_up_to_date_branches(remote_repo, cloned_repo):
     n_branches = 3
     for i in range(n_branches):
         add_tracked_branch(
-            local_repo=cloned_repo,
-            remote_repo=remote_repo,
-            prefix=f"{i}"
+            local_repo=cloned_repo, remote_repo=remote_repo, prefix=f"{i}"
         )
     reports = get_unpushed_reports(cloned_repo)
     assert len(reports) == 0
@@ -30,15 +28,13 @@ def test_multiple_branches(remote_repo, cloned_repo):
     n_branches = 3
     for i in range(n_branches):
         lb, _ = add_tracked_branch(
-            local_repo=cloned_repo,
-            remote_repo=remote_repo,
-            prefix=f"{i}"
+            local_repo=cloned_repo, remote_repo=remote_repo, prefix=f"{i}"
         )
         lb.checkout()
         cloned_repo.index.commit(f"local only commit on {lb}")
     reports = get_unpushed_reports(cloned_repo)
     assert len(reports) == n_branches
-    assert reports[0].additional_info['branch'] is not None
+    assert reports[0].additional_info["branch"] is not None
 
 
 def test_outdated_branches(remote_repo, cloned_repo):

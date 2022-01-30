@@ -37,7 +37,7 @@ def add_n_commits(repo: Repo, n_commits):
 def add_n_big_commits(repo: Repo, n_commits):
     FILENAME = "big_file.txt"
     for i in range(n_commits):
-        with open(Path(repo.working_dir) / FILENAME , "w") as big_file:
+        with open(Path(repo.working_dir) / FILENAME, "w") as big_file:
             for i in range(100):
                 big_file.write(lorem.paragraph())
         repo.index.add(FILENAME)
@@ -46,24 +46,24 @@ def add_n_big_commits(repo: Repo, n_commits):
 
 def add_tracked_branch(local_repo, remote_repo, prefix: str):
     # create remote branch
-    remote_branch_name = f'remote_{prefix}'
+    remote_branch_name = f"remote_{prefix}"
     tb = remote_repo.create_head(remote_branch_name)
     origin = local_repo.remotes.origin
     origin.fetch()
     # create local branches
-    local_branch_name = f'branch_{prefix}'
+    local_branch_name = f"branch_{prefix}"
     lb = local_repo.create_head(local_branch_name)
     lb.set_tracking_branch(origin.refs[remote_branch_name])
     return lb, tb
 
 
 def add_merged_branch(repo: Repo):
-    repo.create_head('merged_branch', 'HEAD~1')
+    repo.create_head("merged_branch", "HEAD~1")
 
 
-def add_ahead_branch(repo: Repo, name='ahead_branch'):
+def add_ahead_branch(repo: Repo, name="ahead_branch"):
     repo.index.commit(f"new_branch_{name}")
-    repo.create_head(name, 'HEAD')
-    repo.active_branch.commit = repo.commit('HEAD~1')
+    repo.create_head(name, "HEAD")
+    repo.active_branch.commit = repo.commit("HEAD~1")
     assert repo.active_branch.commit == repo.heads[name].commit.parents[0]
     return repo.heads[name]

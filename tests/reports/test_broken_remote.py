@@ -14,11 +14,12 @@ def master_gone_repo(remote_repo: Repo):
         with TemporaryDirectory() as remote_directory:
             remote_repo = create_repo(remote_directory)
             cloned_repo = create_cloned_repo(
-                repo_directory=directory,
-                remote_repo=remote_repo
+                repo_directory=directory, remote_repo=remote_repo
             )
             # ensure the directory is gone
-            shutil.rmtree(remote_directory, )
+            shutil.rmtree(
+                remote_directory,
+            )
         # remove remote by closing remote_directory
         yield cloned_repo
 
@@ -36,4 +37,4 @@ def test_return_something_on_broken_remote(master_gone_repo: Repo):
 def test_contain_origin_on_broken_remote(master_gone_repo: Repo):
     reports = get_remote_branch_is_gone_reports(master_gone_repo)
     assert len(reports) == 1
-    assert reports[0].additional_info['remote'] == 'origin'
+    assert reports[0].additional_info["remote"] == "origin"

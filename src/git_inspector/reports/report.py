@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-Report = namedtuple('report', ['repo', 'additional_info', 'report_type'])
+Report = namedtuple("report", ["repo", "additional_info", "report_type"])
 
 
 class ReportType:
@@ -16,6 +16,6 @@ GIT_REPORT_LEVEL_HINT = 2
 GIT_REPORT_LEVEL = [
     GIT_REPORT_LEVEL_ALERT,
     GIT_REPORT_LEVEL_WARNING,
-    GIT_REPORT_LEVEL_HINT
+    GIT_REPORT_LEVEL_HINT,
 ]
-REPORT_LEVEL_NAMES = ['alert', 'warning', 'hint']
+REPORT_LEVEL_NAMES = ["alert", "warning", "hint"]

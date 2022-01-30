@@ -8,24 +8,18 @@ from ..common import get_untracked_heads
 from .report import Report, ReportType, GIT_REPORT_LEVEL_WARNING
 
 untracked_report = ReportType(
-    'untracked',
-    'untracked branches',
-    GIT_REPORT_LEVEL_WARNING
+    "untracked", "untracked branches", GIT_REPORT_LEVEL_WARNING
 )
 
 
 def get_untracked_reports(repo: Repo) -> List[Report]:
     untracked_branches = get_untracked_branches(repo)
     merged_branches = get_merged_heads(repo)
-    untracked_branches = [
-        b for b in untracked_branches if b not in merged_branches
-    ]
+    untracked_branches = [b for b in untracked_branches if b not in merged_branches]
     reports = [
         Report(
             repo=repo.working_dir,
-            additional_info={
-                'branch': untracked_branch.name
-            },
+            additional_info={"branch": untracked_branch.name},
             report_type=untracked_report,
         )
         for untracked_branch in untracked_branches
@@ -36,4 +30,3 @@ def get_untracked_reports(repo: Repo) -> List[Report]:
 def get_untracked_branches(repo: Repo):
     untracked_heads = get_untracked_heads(repo)
     return untracked_heads
-

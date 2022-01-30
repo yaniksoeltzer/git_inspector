@@ -1,17 +1,15 @@
 from tempfile import TemporaryDirectory
 import pytest
 from git import Repo
-from git_inspector.formatter.report_type_oriented_report_formatter import format_git_reports
+from git_inspector.formatter.report_type_oriented_report_formatter import (
+    format_git_reports,
+)
 from git_inspector.reports import ReportType, GIT_REPORT_LEVEL_ALERT, Report, REPORTS
 from git_inspector.reports.dirty import get_dirty_report
 from tests.testutils import create_repo
 
 
-example_report = ReportType(
-    'example',
-    'example header',
-    GIT_REPORT_LEVEL_ALERT
-)
+example_report = ReportType("example", "example header", GIT_REPORT_LEVEL_ALERT)
 
 
 @pytest.fixture
@@ -22,9 +20,7 @@ def repo():
 
 def test_output_contains_working_directory():
     working_dir = "my_custom_directory"
-    reports = [
-        Report(working_dir, {}, example_report)
-    ]
+    reports = [Report(working_dir, {}, example_report)]
     output = format_git_reports(reports, 10)
     assert working_dir in output
 

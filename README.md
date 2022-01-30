@@ -1,7 +1,7 @@
 # Git-Inspector
 
-
-Unit Tests: [![<yaniksoeltzer>](https://circleci.com/gh/yaniksoeltzer/git_inspector.svg?style=svg)](https://circleci.com/gh/yaniksoeltzer/git_inspector)
+[![<yaniksoeltzer>](https://circleci.com/gh/yaniksoeltzer/git_inspector.svg?style=shield)](https://circleci.com/gh/yaniksoeltzer/git_inspector)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Inspect git repositories and report best practices violations.
 

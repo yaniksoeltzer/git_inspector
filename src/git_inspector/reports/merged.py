@@ -6,9 +6,7 @@ from ..common import get_master_branch, get_non_master_branches, is_ancestors_of
 from .report import ReportType, Report, GIT_REPORT_LEVEL_HINT
 
 merged_report = ReportType(
-    'master_merged_branches',
-    'branches merged into master',
-    GIT_REPORT_LEVEL_HINT
+    "master_merged_branches", "branches merged into master", GIT_REPORT_LEVEL_HINT
 )
 
 
@@ -17,9 +15,7 @@ def get_merged_reports(repo: Repo) -> List[Report]:
     reports = [
         Report(
             repo=repo.working_dir,
-            additional_info={
-                'branch': merged_head.name
-            },
+            additional_info={"branch": merged_head.name},
             report_type=merged_report,
         )
         for merged_head in merged_heads
@@ -33,8 +29,6 @@ def get_merged_heads(repo):
     if master:
         non_masters = get_non_master_branches(repo)
         for non_master in non_masters:
-            if is_ancestors_of(
-                    ancestor=non_master.commit,
-                    commit=master.commit):
+            if is_ancestors_of(ancestor=non_master.commit, commit=master.commit):
                 merged_heads.append(non_master)
     return merged_heads
