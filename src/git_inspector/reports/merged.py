@@ -2,7 +2,12 @@ from typing import List
 
 from git import Repo
 
-from ..common import get_master_branch, get_non_master_branches, is_ancestors_of
+from ..common import (
+    get_master_branch,
+    get_non_master_branches,
+    is_ancestors_of,
+    is_ahead_of,
+)
 from .report import ReportType, Report, GIT_REPORT_LEVEL_HINT
 
 merged_report = ReportType(
@@ -29,6 +34,7 @@ def get_merged_heads(repo):
     if master:
         non_masters = get_non_master_branches(repo)
         for non_master in non_masters:
-            if is_ancestors_of(ancestor=non_master.commit, commit=master.commit):
+            is_merged = not is_ahead_of(repo, master, non_master)
+            if is_merged:
                 merged_heads.append(non_master)
     return merged_heads
