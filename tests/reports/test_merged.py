@@ -10,9 +10,10 @@ def test_return_none_on_clean_repo(repo: Repo):
 
 
 def test_return_something_on_merged_branch_repo(repo: Repo):
-    add_merged_branch(repo)
+    merged_branch = add_merged_branch(repo)
     reports = get_merged_reports(repo)
-    assert len(reports) > 0
+    assert len(reports) == 1
+    assert reports[0].additional_info["branch"] == merged_branch.name
 
 
 def test_ahead_branch(repo: Repo):

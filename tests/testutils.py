@@ -58,7 +58,9 @@ def add_tracked_branch(local_repo, remote_repo, prefix: str):
 
 
 def add_merged_branch(repo: Repo):
-    repo.create_head("merged_branch", "HEAD~1")
+    name = "merged_branch"
+    repo.create_head(name, "HEAD~1")
+    return repo.heads[name]
 
 
 def add_ahead_branch(repo: Repo, name="ahead_branch"):
