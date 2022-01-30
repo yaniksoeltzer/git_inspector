@@ -23,7 +23,6 @@ jobs:
       - checkout
       - run:
           command: |
-            python -m pip install .
             python -m pip install tox
             python -m tox --skip-missing-interpreters
 
