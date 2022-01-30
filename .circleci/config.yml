@@ -13,7 +13,7 @@ jobs:
       - run:
           command: |
             python -m pip install black
-            python -m black --check src tests documentation
+            python -m black --check src tests profile documentation
 
   build-and-test:
     executor:

@@ -14,14 +14,17 @@ def test_is_ahead_vs_is_ancestor_of():
         ancestor_commit = repo.commit(f"HEAD~{n_commits}")
         commit = repo.commit("HEAD")
 
-        elapsed_time_is_ahead_of = measure_is_ahead_of(repo=repo,
-                                                       ancestor=ancestor_commit,
-                                                       commit=commit)
+        elapsed_time_is_ahead_of = measure_is_ahead_of(
+            repo=repo, ancestor=ancestor_commit, commit=commit
+        )
         print(f"Elapsed time for 'is_ahead_of' {elapsed_time_is_ahead_of * 1000} ms")
 
-        elapsed_time_is_ancestor_of = measure_is_ancestor_of(ancestor=ancestor_commit,
-                                                             commit=commit)
-        print(f"Elapsed time for 'is_ancestors_of' {elapsed_time_is_ancestor_of * 1000} ms")
+        elapsed_time_is_ancestor_of = measure_is_ancestor_of(
+            ancestor=ancestor_commit, commit=commit
+        )
+        print(
+            f"Elapsed time for 'is_ancestors_of' {elapsed_time_is_ancestor_of * 1000} ms"
+        )
 
 
 def measure_is_ancestor_of(ancestor, commit):
