@@ -1,4 +1,11 @@
-EXCLUDED_DIR_SELECTORS = ["Trash", "/proc", ".cache", "node_modules", "~/.cargo"]
+EXCLUDED_DIR_SELECTORS = [
+    "Trash",
+    "/proc",
+    ".cache",
+    "node_modules",
+    "~/.cargo",
+    "/tmp",
+]
 
 
 COLOR_ALERT = "\033[1;31m"
