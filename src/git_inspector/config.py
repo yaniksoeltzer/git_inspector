@@ -5,6 +5,7 @@ EXCLUDED_DIR_SELECTORS = [
     "node_modules",
     "~/.cargo",
     "/tmp",
+    "/var/tmp",
 ]
 
 
