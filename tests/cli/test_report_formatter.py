@@ -31,7 +31,7 @@ def test_clean_repo_output(repo: Repo):
         report = f(repo)
         reports.extend(report)
     output = format_git_reports(reports, 10)
-    assert repo.working_dir in output
+    assert "10 git repositories found." in output
 
 
 def test_dirty_repo_output(dirty_repo: Repo):

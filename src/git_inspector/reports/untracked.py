@@ -3,9 +3,9 @@ from typing import List
 from git import Repo
 
 from .merged import get_merged_heads
-from ..common import get_untracked_heads
-
+from ..common import get_untracked_heads, is_local_repo
 from .report import Report, ReportType, GIT_REPORT_LEVEL_WARNING
+
 
 untracked_report = ReportType(
     "untracked", "untracked branches", GIT_REPORT_LEVEL_WARNING
@@ -13,6 +13,8 @@ untracked_report = ReportType(
 
 
 def get_untracked_reports(repo: Repo) -> List[Report]:
+    if is_local_repo(repo):
+        return []
     untracked_branches = get_untracked_branches(repo)
     merged_branches = get_merged_heads(repo)
     untracked_branches = [b for b in untracked_branches if b not in merged_branches]

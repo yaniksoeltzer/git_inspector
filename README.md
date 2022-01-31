@@ -13,7 +13,8 @@ So far the following reports are generated:
 * `dirty.py` reports repositories with a **dirty working directory**
 * `merged.py` reports branches, that are **merged** into the *master* **branch** and can be safely deleted
 * `unpushed.py` reports branches, that contain **un-pushed** commits
-* `untrached_branches.py` reports branches, that have **no upstream** and exist only locally
+* `untrached_branches.py` reports branches, that have **no upstream**
+* `local.py` reports **local only** repositories
 * `broken_remote.py` reports local remotes of which the remote directory does not exist  
 * `untracked.py` reports branches, that are **not tracked** by a remote branch
 

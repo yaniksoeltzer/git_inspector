@@ -65,3 +65,7 @@ def remote_is_gone(remote: Remote):
             if not os.path.exists(url):
                 return True
     return False
+
+
+def is_local_repo(repo: Repo):
+    return all(head.tracking_branch() is None for head in repo.heads)

@@ -3,9 +3,9 @@ from git_inspector.reports.untracked import get_untracked_reports
 from tests.testutils import add_ahead_branch
 
 
-def test_return_something_on_local_repo(repo: Repo):
+def test_return_non_on_local_repo(repo: Repo):
     reports = get_untracked_reports(repo)
-    assert len(reports) > 0
+    assert len(reports) == 0
 
 
 def test_return_none_on_tracked_repo(cloned_repo):
