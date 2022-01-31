@@ -63,7 +63,12 @@ def summary_string(git_reports: list, n_repos: int):
         summary = COLOR_SUCCESS + summary + COLOR_RESET
         return summary
 
-    summary = f"{SUMMARY_COLOR_NOT_CLEAN}{n_repos} git repositories found {COLOR_RESET}"
+    if a_cnt[GIT_REPORT_LEVEL_ALERT] == 0 and a_cnt[GIT_REPORT_LEVEL_WARNING] == 0:
+        summary_color = COLOR_SUCCESS
+    else:
+        summary_color = SUMMARY_COLOR_NOT_CLEAN
+
+    summary = f"{summary_color}{n_repos} git repositories found {COLOR_RESET}"
 
     sss = []
     if a_cnt[GIT_REPORT_LEVEL_ALERT] > 0:
@@ -75,10 +80,12 @@ def summary_string(git_reports: list, n_repos: int):
     if a_cnt[GIT_REPORT_LEVEL_HINT] > 0:
         sss.append(f"{COLOR_HINT}{a_cnt[GIT_REPORT_LEVEL_HINT]} hints{COLOR_RESET}")
     if len(sss) == 1:
-        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}."
+        summary += f"{summary_color}with {sss[0]}{summary_color}."
     if len(sss) == 2:
-        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[1]}{SUMMARY_COLOR_NOT_CLEAN}."
+        summary += (
+            f"{summary_color}with {sss[0]}{summary_color} and {sss[1]}{summary_color}."
+        )
     if len(sss) == 3:
-        summary += f"{SUMMARY_COLOR_NOT_CLEAN}with {sss[0]}{SUMMARY_COLOR_NOT_CLEAN}{SUMMARY_COLOR_NOT_CLEAN}, {sss[1]}{SUMMARY_COLOR_NOT_CLEAN} and {sss[2]}{SUMMARY_COLOR_NOT_CLEAN}."
+        summary += f"{summary_color}with {sss[0]}{summary_color}{summary_color}, {sss[1]}{summary_color} and {sss[2]}{summary_color}."
 
     return summary + colored("", None)
